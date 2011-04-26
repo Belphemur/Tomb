@@ -51,7 +51,7 @@ public class DeathListener extends EntityListener {
 					if (howtheydied[0].equals("PVP"))
 						signtext = howtheydied[2];
 					tomb.addDeath();
-					tomb.setReason(signtext);
+					tomb.setReason("Die by " +signtext);
 				}
 
 			}

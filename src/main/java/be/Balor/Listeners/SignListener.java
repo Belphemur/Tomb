@@ -43,15 +43,20 @@ public class SignListener extends BlockListener {
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(e.getPlayer(), "tomb.admin"))
 				admin = true;
-			Tomb tomb = new Tomb(e.getBlock());
+			Tomb tomb;
 			String deadName;
-			if (admin) {
+			if (admin)
 				deadName = e.getLine(1);
-				tomb.setPlayer(deadName);
-			} else {
+			else
 				deadName = e.getPlayer().getName();
-				tomb.setPlayer(deadName);
-			}
+			Block block = e.getBlock();
+			if (worker.hasTomb(deadName)) {
+				tomb = worker.getTomb(deadName);
+				tomb.setSignBlock(block);
+			} else
+				tomb = new Tomb(block);
+
+			tomb.setPlayer(deadName);
 			worker.setTomb(deadName, tomb);
 		}
 

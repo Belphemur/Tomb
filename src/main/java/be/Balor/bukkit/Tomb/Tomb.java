@@ -105,6 +105,14 @@ public class Tomb {
 	}
 
 	/**
+	 * @param signBlock
+	 *            the signBlock to set
+	 */
+	public void setSignBlock(Block signBlock) {
+		this.signBlock = signBlock;
+	}
+
+	/**
 	 * @return the player
 	 */
 	public String getPlayer() {
