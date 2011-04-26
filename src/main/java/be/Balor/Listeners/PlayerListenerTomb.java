@@ -16,23 +16,25 @@
  ************************************************************************/
 package be.Balor.Listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 
 import be.Balor.Workers.TombWorker;
-import be.Balor.Workers.Worker;
+import be.Balor.bukkit.Tomb.Tomb;
 
 /**
  * @author Balor (aka Antoine Aflalo)
  * 
  */
 public class PlayerListenerTomb extends PlayerListener {
-	private Worker worker;
+	private TombWorker worker;
 
 	public PlayerListenerTomb() {
 		worker = TombWorker.getInstance();
@@ -50,7 +52,15 @@ public class PlayerListenerTomb extends PlayerListener {
 			if (block.getType().equals(Material.WALL_SIGN)
 					|| block.getType().equals(Material.SIGN_POST)) {
 				Sign sign = (Sign) block.getState();
-				//TODO
+				Player p = event.getPlayer();
+				if (worker.hasTomb(p.getName())) {
+					Tomb tomb = worker.getTomb(p.getName());
+					if (tomb.getSign().equals(sign)) {
+						Location toTp;
+						if ((toTp = tomb.getDeathLoc()) != null)
+							p.teleport(toTp);
+					}
+				}
 			}
 		}
 	}

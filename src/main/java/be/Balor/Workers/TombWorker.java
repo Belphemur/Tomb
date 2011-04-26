@@ -16,21 +16,63 @@
  ************************************************************************/
 package be.Balor.Workers;
 
+import java.util.HashMap;
+import be.Balor.bukkit.Tomb.Tomb;
+
 /**
  * @author Balor (aka Antoine Aflalo)
  * 
  */
 public class TombWorker extends Worker {
 	private static TombWorker instance;
+	protected HashMap<String, Tomb> tombs = new HashMap<String, Tomb>();
 
 	public static TombWorker getInstance() {
 		if (instance == null)
 			instance = new TombWorker();
 		return instance;
 	}
-	private TombWorker()
-	{
-		
+
+	private TombWorker() {
+
+	}
+
+	/**
+	 * Check if the player have already a tomb
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean hasTomb(String player) {
+		return tombs.containsKey(player);
+	}
+
+	/**
+	 * Add the tomb
+	 * 
+	 * @param player
+	 * @param sign
+	 */
+	public void setTomb(String player, Tomb tomb) {
+		tombs.put(player, tomb);
+	}
+
+	/**
+	 * Remove the tomb of the player.
+	 * 
+	 * @param player
+	 */
+	public void removeTomb(String player) {
+		tombs.remove(player);
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @return the tombs of the player
+	 */
+	public Tomb getTomb(String player) {
+		return tombs.get(player);
 	}
 
 }
