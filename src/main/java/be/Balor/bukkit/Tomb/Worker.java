@@ -29,25 +29,25 @@ import com.nijiko.coelho.iConomy.iConomy;
  * @author Balor (aka Antoine Aflalo)
  * 
  */
-public class TombWorker {
-	private static PermissionHandler permission = null;
+public class Worker {
+	protected static PermissionHandler permission = null;
 	public static final Logger log = Logger.getLogger("Minecraft");
-	private static iConomy iConomy = null;
-	private static TombWorker instance;
-	private HashMap<String, HashMap<String, Boolean>> permissions = new HashMap<String, HashMap<String, Boolean>>();
+	protected static iConomy iConomy = null;
+	protected static Worker instance;
+	protected HashMap<String, HashMap<String, Boolean>> permissions = new HashMap<String, HashMap<String, Boolean>>();
 
 	/**
 	 * Singleton
 	 * 
 	 * @return
 	 */
-	public static TombWorker getInstance() {
+	public static Worker getInstance() {
 		if (instance == null)
-			instance = new TombWorker();
+			instance = new Worker();
 		return instance;
 	}
 
-	private TombWorker() {
+	private Worker() {
 
 	}
 

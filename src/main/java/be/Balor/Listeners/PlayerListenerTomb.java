@@ -24,17 +24,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import be.Balor.bukkit.Tomb.TombWorker;
+import be.Balor.bukkit.Tomb.Worker;
 
 /**
  * @author Balor (aka Antoine Aflalo)
  * 
  */
 public class PlayerListenerTomb extends PlayerListener {
-	private TombWorker worker;
+	private Worker worker;
 
 	public PlayerListenerTomb() {
-		worker = TombWorker.getInstance();
+		worker = Worker.getInstance();
 	}
 
 	@Override
