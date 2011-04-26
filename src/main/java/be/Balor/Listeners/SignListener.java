@@ -53,7 +53,6 @@ public class SignListener extends BlockListener {
 				tomb.setPlayer(deadName);
 			}
 			worker.setTomb(deadName, tomb);
-			worker.getTomb(deadName).addDeath();
 		}
 
 	}
