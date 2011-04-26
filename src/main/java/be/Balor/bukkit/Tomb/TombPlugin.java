@@ -24,6 +24,7 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import be.Balor.Listeners.DeathListener;
 import be.Balor.Listeners.PlayerListenerTomb;
 import be.Balor.Listeners.PluginListener;
 import be.Balor.Listeners.SignListener;
@@ -53,12 +54,15 @@ public class TombPlugin extends JavaPlugin {
 		PluginListener pL = new PluginListener();
 		SignListener sL = new SignListener();
 		PlayerListenerTomb pLt = new PlayerListenerTomb();
+		DeathListener dL = new DeathListener();
 		PluginManager pm=getServer().getPluginManager();
 		pm.registerEvent(Event.Type.SIGN_CHANGE, sL, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, pLt, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, sL, Priority.High, this);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, dL, Priority.High, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, dL, Priority.High, this);
 	}
 
 	/* (non-Javadoc)
