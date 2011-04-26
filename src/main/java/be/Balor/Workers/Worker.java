@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Tomb.  If not, see <http://www.gnu.org/licenses/>.
  ************************************************************************/
-package be.Balor.bukkit.Tomb;
+package be.Balor.Workers;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -29,27 +29,11 @@ import com.nijiko.coelho.iConomy.iConomy;
  * @author Balor (aka Antoine Aflalo)
  * 
  */
-public class Worker {
+public abstract class Worker {
 	protected static PermissionHandler permission = null;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	protected static iConomy iConomy = null;
-	protected static Worker instance;
 	protected HashMap<String, HashMap<String, Boolean>> permissions = new HashMap<String, HashMap<String, Boolean>>();
-
-	/**
-	 * Singleton
-	 * 
-	 * @return
-	 */
-	public static Worker getInstance() {
-		if (instance == null)
-			instance = new Worker();
-		return instance;
-	}
-
-	private Worker() {
-
-	}
 
 	/**
 	 * Check the permissions

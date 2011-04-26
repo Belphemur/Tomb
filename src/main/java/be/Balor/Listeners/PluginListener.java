@@ -20,8 +20,8 @@ package be.Balor.Listeners;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 
+import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.TombPlugin;
-import be.Balor.bukkit.Tomb.Worker;
 
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -36,21 +36,21 @@ public class PluginListener extends ServerListener {
    
     @Override
     public void onPluginEnable(PluginEnableEvent event) {
-        if(Worker.getPermission() == null) {
+        if(TombWorker.getPermission() == null) {
             Plugin Permissions = TombPlugin.getBukkitServer().getPluginManager().getPlugin("Permissions");
             if (Permissions != null) {
                 if(Permissions.isEnabled()) {
-                	Worker.setPermission(((Permissions) Permissions).getHandler());
+                	TombWorker.setPermission(((Permissions) Permissions).getHandler());
                     System.out.println("[Tomb] Successfully linked with Permissions.");
                 }
             }
         }
-        if(Worker.getiConomy() == null) {
+        if(TombWorker.getiConomy() == null) {
             Plugin iConomy = TombPlugin.getBukkitServer().getPluginManager().getPlugin("iConomy");
 
             if (iConomy != null) {
                 if(iConomy.isEnabled()) {
-                	Worker.setiConomy((iConomy)iConomy);
+                	TombWorker.setiConomy((iConomy)iConomy);
                     System.out.println("[Tomb] Successfully linked with iConomy.");
                 }
             }

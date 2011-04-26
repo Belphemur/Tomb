@@ -21,7 +21,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import be.Balor.bukkit.Tomb.Worker;
+import be.Balor.Workers.TombWorker;
+import be.Balor.Workers.Worker;
 
 /**
  * @author Balor (aka Antoine Aflalo)
@@ -31,7 +32,7 @@ public class SignListener extends BlockListener {
 	private Worker worker;
 
 	public SignListener() {
-		worker = Worker.getInstance();
+		worker = TombWorker.getInstance();
 	}
 
 	@Override
