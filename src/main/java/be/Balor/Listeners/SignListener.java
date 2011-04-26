@@ -16,6 +16,7 @@
  ************************************************************************/
 package be.Balor.Listeners;
 
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
@@ -41,22 +42,17 @@ public class SignListener extends BlockListener {
 		boolean admin = false;
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(e.getPlayer(), "tomb.admin"))
-				admin=true;
-			
-				Tomb tomb = new Tomb((Sign)e.getBlock().getState());
-				String deadName;
-				if(admin)
-				{
-					deadName=e.getLine(1);
-					tomb.setPlayer(deadName);
-				}
-				else
-				{
-					deadName=e.getPlayer().getName();
-					tomb.setPlayer(deadName);
-				}
-				worker.setTomb(deadName, tomb);
-			
+				admin = true;
+			Tomb tomb = new Tomb(e.getBlock());
+			String deadName;
+			if (admin) {
+				deadName = e.getLine(1);
+				tomb.setPlayer(deadName);
+			} else {
+				deadName = e.getPlayer().getName();
+				tomb.setPlayer(deadName);
+			}
+			worker.setTomb(deadName, tomb);
 		}
 
 	}
@@ -64,11 +60,12 @@ public class SignListener extends BlockListener {
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.getBlock().getState() instanceof Sign) {
-			Sign sign = (Sign) event.getBlock().getState();
+			Block block =  event.getBlock();
+			Sign sign = (Sign)block.getState();
 			if (sign.getLine(0).indexOf("[Tomb]") == 0
 					&& sign.getLine(0).indexOf("]") != -1
 					&& (!worker.hasPerm(event.getPlayer(), "tomb.admin") && !worker
-							.getTomb(event.getPlayer().getName()).getSign().equals(sign)))
+							.getTomb(event.getPlayer().getName()).getSignBlock().equals(block)))
 				event.setCancelled(true);
 
 		}

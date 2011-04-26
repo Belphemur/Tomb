@@ -16,15 +16,21 @@
  ************************************************************************/
 package be.Balor.bukkit.Tomb;
 
+import java.util.InputMismatchException;
+
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+
+import be.Balor.Workers.TombWorker;
 
 /**
  * @author Balor (aka Antoine Aflalo)
  * 
  */
 public class Tomb {
-	protected Sign sign;
+	protected Block signBlock;
 	protected int deaths = 0;
 	protected String worldName;
 	protected String playerName;
@@ -34,9 +40,27 @@ public class Tomb {
 	/**
 	 * 
 	 */
-	public Tomb(Sign sign) {
-		this.sign = sign;
-		worldName=sign.getBlock().getWorld().getName(); 
+	public Tomb(Block sign) throws InputMismatchException {
+		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
+				|| sign.getType() == Material.SIGN_POST) {
+			this.signBlock = sign;
+			worldName = sign.getWorld().getName();
+		} else
+			throw new InputMismatchException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+	}
+
+	/**
+	 * update the sign in the game
+	 */
+	private void setLine(final int line, final String message) {
+		TombPlugin.getBukkitServer().getScheduler()
+				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					public void run() {
+						Sign sign = (Sign) signBlock.getState();
+						sign.setLine(line, message);
+						sign.update();
+					}
+				});
 	}
 
 	/**
@@ -44,58 +68,70 @@ public class Tomb {
 	 */
 	public void addDeath() {
 		deaths++;
-		sign.setLine(2, deaths+" Deaths");
+		setLine(2, deaths + " Deaths");
 	}
+
 	/**
-	 * @param reason the reason to set
+	 * @param reason
+	 *            the reason to set
 	 */
 	public void setReason(String reason) {
 		this.reason = reason;
-		sign.setLine(3, reason);
+		setLine(3, reason);
 	}
+
 	/**
-	 * @param player the player to set
+	 * @param player
+	 *            the player to set
 	 */
 	public void setPlayer(String player) {
 		this.playerName = player;
-		sign.setLine(1, player);
+		setLine(1, player);
 	}
+
 	/**
-	 * @param deathLoc the deathLoc to set
+	 * @param deathLoc
+	 *            the deathLoc to set
 	 */
 	public void setDeathLoc(Location deathLoc) {
 		this.deathLoc = deathLoc;
 	}
+
 	/**
 	 * @return the deathLoc
 	 */
 	public Location getDeathLoc() {
 		return deathLoc;
 	}
+
 	/**
 	 * @return the player
 	 */
 	public String getPlayer() {
 		return playerName;
 	}
+
 	/**
 	 * @return the reason
 	 */
 	public String getReason() {
 		return reason;
 	}
+
 	/**
-	 * @return the sign
+	 * @return the signBlock
 	 */
-	public Sign getSign() {
-		return sign;
+	public Block getSignBlock() {
+		return signBlock;
 	}
+
 	/**
 	 * @return the deaths
 	 */
 	public int getDeaths() {
 		return deaths;
 	}
+
 	/**
 	 * @return the world
 	 */

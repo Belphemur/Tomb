@@ -27,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import be.Balor.Listeners.PlayerListenerTomb;
 import be.Balor.Listeners.PluginListener;
 import be.Balor.Listeners.SignListener;
+import be.Balor.Workers.TombWorker;
 
 /**
  * @author Balor (aka Antoine Aflalo)
@@ -65,6 +66,7 @@ public class TombPlugin extends JavaPlugin {
 	public void onEnable() {
 		server=getServer();
 		setupListeners();
+		TombWorker.getInstance().setPluginInstance(this);
 		log.info("[" + this.getDescription().getName() + "]" + " (version "
 				+ this.getDescription().getVersion() + ") Enabled");
 

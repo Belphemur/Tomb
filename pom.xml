@@ -4,6 +4,9 @@
   <artifactId>Tomb</artifactId>
   <version>0.1</version>
   <name>Tomb</name>
+  <build>
+  	<defaultGoal>clean install</defaultGoal>
+  </build>
   <repositories>
   	<repository>
   		<id>bukkit-repo</id>

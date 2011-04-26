@@ -18,6 +18,7 @@ package be.Balor.Workers;
 
 import java.util.HashMap;
 import be.Balor.bukkit.Tomb.Tomb;
+import be.Balor.bukkit.Tomb.TombPlugin;
 
 /**
  * @author Balor (aka Antoine Aflalo)
@@ -26,6 +27,7 @@ import be.Balor.bukkit.Tomb.Tomb;
 public class TombWorker extends Worker {
 	private static TombWorker instance;
 	protected HashMap<String, Tomb> tombs = new HashMap<String, Tomb>();
+	protected TombPlugin pluginInstance;
 
 	public static TombWorker getInstance() {
 		if (instance == null)
@@ -35,6 +37,21 @@ public class TombWorker extends Worker {
 
 	private TombWorker() {
 
+	}
+
+	/**
+	 * @param pluginInstance
+	 *            the pluginInstance to set
+	 */
+	public void setPluginInstance(TombPlugin pluginInstance) {
+		this.pluginInstance = pluginInstance;
+	}
+
+	/**
+	 * @return the pluginInstance
+	 */
+	public TombPlugin getPlugin() {
+		return pluginInstance;
 	}
 
 	/**

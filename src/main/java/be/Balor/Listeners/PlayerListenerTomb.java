@@ -51,11 +51,10 @@ public class PlayerListenerTomb extends PlayerListener {
 			Block block = event.getClickedBlock();
 			if (block.getType().equals(Material.WALL_SIGN)
 					|| block.getType().equals(Material.SIGN_POST)) {
-				Sign sign = (Sign) block.getState();
 				Player p = event.getPlayer();
 				if (worker.hasTomb(p.getName())) {
 					Tomb tomb = worker.getTomb(p.getName());
-					if (tomb.getSign().equals(sign)) {
+					if (tomb.getSignBlock().equals(block)) {
 						Location toTp;
 						if ((toTp = tomb.getDeathLoc()) != null)
 							p.teleport(toTp);
