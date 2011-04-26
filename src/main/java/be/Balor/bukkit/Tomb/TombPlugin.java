@@ -16,8 +16,17 @@
  ************************************************************************/
 package be.Balor.bukkit.Tomb;
 
+import java.util.logging.Logger;
+
 import org.bukkit.Server;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import be.Balor.Listeners.PlayerListenerTomb;
+import be.Balor.Listeners.PluginListener;
+import be.Balor.Listeners.SignListener;
 
 /**
  * @author Balor (aka Antoine Aflalo)
@@ -25,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class TombPlugin extends JavaPlugin {
 	private static Server server = null;
+	public static final Logger log = Logger.getLogger("Minecraft");
 	public static Server getBukkitServer() {
 		return server;
 	}
@@ -34,7 +44,19 @@ public class TombPlugin extends JavaPlugin {
 	 */
 	public void onDisable() {
 		// TODO Auto-generated method stub
+		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
 
+	}
+	private void setupListeners()
+	{
+		PluginListener pL = new PluginListener();
+		SignListener sL = new SignListener();
+		PlayerListenerTomb pLt = new PlayerListenerTomb();
+		PluginManager pm=getServer().getPluginManager();
+		pm.registerEvent(Event.Type.SIGN_CHANGE, sL, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, pLt, Priority.Normal, this);
 	}
 
 	/* (non-Javadoc)
@@ -42,6 +64,9 @@ public class TombPlugin extends JavaPlugin {
 	 */
 	public void onEnable() {
 		server=getServer();
+		setupListeners();
+		log.info("[" + this.getDescription().getName() + "]" + " (version "
+				+ this.getDescription().getVersion() + ") Enabled");
 
 	}
 
