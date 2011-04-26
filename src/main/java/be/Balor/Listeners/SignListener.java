@@ -53,6 +53,7 @@ public class SignListener extends BlockListener {
 				tomb.setPlayer(deadName);
 			}
 			worker.setTomb(deadName, tomb);
+			worker.getTomb(deadName).addDeath();
 		}
 
 	}
@@ -60,13 +61,18 @@ public class SignListener extends BlockListener {
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.getBlock().getState() instanceof Sign) {
-			Block block =  event.getBlock();
-			Sign sign = (Sign)block.getState();
-			if (sign.getLine(0).indexOf("[Tomb]") == 0
-					&& sign.getLine(0).indexOf("]") != -1
-					&& (!worker.hasPerm(event.getPlayer(), "tomb.admin") && !worker
-							.getTomb(event.getPlayer().getName()).getSignBlock().equals(block)))
-				event.setCancelled(true);
+			Block block = event.getBlock();
+			String playerName = event.getPlayer().getName();
+			Sign sign = (Sign) block.getState();
+			if (sign.getLine(0).indexOf("[Tomb]") == 0 && sign.getLine(0).indexOf("]") != -1) {
+				if (worker.hasPerm(event.getPlayer(), "tomb.admin"))
+					return;
+				if (worker.hasTomb(playerName)) {
+					if (!worker.getTomb(playerName).getSignBlock().equals(block))
+						event.setCancelled(true);
+				} else
+					event.setCancelled(true);
+			}
 
 		}
 	}

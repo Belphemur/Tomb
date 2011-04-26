@@ -58,6 +58,7 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, pLt, Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, sL, Priority.High, this);
 	}
 
 	/* (non-Javadoc)
