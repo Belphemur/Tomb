@@ -28,7 +28,7 @@ public class TombSave implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 312699013882578456L;
 	protected ArrayList<LocSave> signBlocks;
 	protected int deaths;
 	protected String player;
@@ -61,7 +61,7 @@ class LocSave implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8631716113887974333L;
 	private double x;
 	private double y;
 	private double z;

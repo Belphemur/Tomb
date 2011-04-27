@@ -15,7 +15,7 @@
   <repositories>
   	<repository>
   		<id>bukkit-repo</id>
-  		<url>http://repo.bukkit.org/artifactory/repo</url>
+  		<url>http://www.gestdown.info:8888/artifactory/bukkit-repo</url>
   	</repository>
   	<repository>
           <snapshots>
