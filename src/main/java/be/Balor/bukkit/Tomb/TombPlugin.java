@@ -45,7 +45,7 @@ public class TombPlugin extends JavaPlugin {
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
-		// TODO Auto-generated method stub
+		TombWorker.getInstance().save();
 		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
 
 	}
@@ -72,6 +72,7 @@ public class TombPlugin extends JavaPlugin {
 		server=getServer();
 		setupListeners();
 		TombWorker.getInstance().setPluginInstance(this);
+		TombWorker.getInstance().load();
 		log.info("[" + this.getDescription().getName() + "]" + " (version "
 				+ this.getDescription().getVersion() + ") Enabled");
 
