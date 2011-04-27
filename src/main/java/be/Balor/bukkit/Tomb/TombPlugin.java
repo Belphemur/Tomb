@@ -32,16 +32,19 @@ import be.Balor.Workers.TombWorker;
 
 /**
  * @author Balor (aka Antoine Aflalo)
- *
+ * 
  */
 public class TombPlugin extends JavaPlugin {
 	private static Server server = null;
 	public static final Logger log = Logger.getLogger("Minecraft");
+
 	public static Server getBukkitServer() {
 		return server;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
@@ -49,13 +52,13 @@ public class TombPlugin extends JavaPlugin {
 		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
 
 	}
-	private void setupListeners()
-	{
+
+	private void setupListeners() {
 		PluginListener pL = new PluginListener();
 		SignListener sL = new SignListener();
 		PlayerListenerTomb pLt = new PlayerListenerTomb();
 		DeathListener dL = new DeathListener();
-		PluginManager pm=getServer().getPluginManager();
+		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.SIGN_CHANGE, sL, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
@@ -65,16 +68,18 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, dL, Priority.High, this);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.bukkit.plugin.Plugin#onEnable()
 	 */
 	public void onEnable() {
-		server=getServer();
+		server = getServer();
 		setupListeners();
 		TombWorker.getInstance().setPluginInstance(this);
-		TombWorker.getInstance().load();
 		log.info("[" + this.getDescription().getName() + "]" + " (version "
 				+ this.getDescription().getVersion() + ") Enabled");
+		TombWorker.getInstance().load();
 
 	}
 

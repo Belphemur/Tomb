@@ -62,7 +62,7 @@ public class Tomb {
 								for (Block block : signBlocks) {
 									Sign sign = (Sign) block.getState();
 									sign.setLine(line, message);
-									sign.update();
+									sign.update(true);
 								}
 							}
 						});
