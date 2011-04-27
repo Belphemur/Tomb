@@ -31,6 +31,7 @@ public class TombWorker extends Worker {
 	private static TombWorker instance;
 	protected HashMap<String, Tomb> tombs = new HashMap<String, Tomb>();
 	protected TombPlugin pluginInstance;
+	protected SaveSystem saveSys;
 
 	public static TombWorker getInstance() {
 		if (instance == null)
@@ -48,6 +49,7 @@ public class TombWorker extends Worker {
 	 */
 	public void setPluginInstance(TombPlugin pluginInstance) {
 		this.pluginInstance = pluginInstance;
+		saveSys = new SaveSystem(pluginInstance.getDataFolder().getPath());
 	}
 
 	/**
@@ -92,18 +94,27 @@ public class TombWorker extends Worker {
 	 * @return the tombs of the player
 	 */
 	public Tomb getTomb(String player) {
-		
+
 		return tombs.get(player);
 	}
-	public Tomb getTomb(Block sign)
-	{
-		for(String name : tombs.keySet())
-		{
+
+	public Tomb getTomb(Block sign) {
+		for (String name : tombs.keySet()) {
 			Tomb result;
-			if((result=tombs.get(name)).hasSign(sign))
+			if ((result = tombs.get(name)).hasSign(sign))
 				return result;
 		}
 		return null;
+	}
+
+	public synchronized void save() {
+		saveSys.save(tombs);
+		log.info("[Tomb] Tombs saved !");
+	}
+	public synchronized void load()
+	{
+		tombs = saveSys.load();
+		log.info("[Tomb] Tombs loaded !");
 	}
 
 }

@@ -176,5 +176,13 @@ public class Tomb {
 	public ArrayList<Block> getSignBlocks() {
 		return signBlocks;
 	}
+	/**
+	 * To save the Tomb
+	 * @return
+	 */
+	public TombSave save()
+	{
+		return new TombSave(this);
+	}
 
 }
