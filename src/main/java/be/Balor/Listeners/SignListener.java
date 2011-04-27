@@ -69,9 +69,10 @@ public class SignListener extends BlockListener {
 			String playerName = event.getPlayer().getName();
 			Sign sign = (Sign) block.getState();
 			if (sign.getLine(0).indexOf("[Tomb]") == 0 && sign.getLine(0).indexOf("]") != -1) {
-				if (worker.hasPerm(event.getPlayer(), "tomb.admin"))
-				{
-					worker.getTomb(block).removeSignBlock(block);
+				if (worker.hasPerm(event.getPlayer(), "tomb.admin")) {
+					Tomb tomb;
+					if ((tomb = worker.getTomb(block)) != null)
+						tomb.removeSignBlock(block);
 					return;
 				}
 				if (worker.hasTomb(playerName)) {

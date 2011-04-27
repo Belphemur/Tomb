@@ -29,7 +29,7 @@ public class TombSave implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 312699013882578456L;
-	protected ArrayList<LocSave> signBlocks;
+	protected ArrayList<LocSave> signBlocks = new ArrayList<LocSave>();
 	protected int deaths;
 	protected String player;
 	protected String reason;
