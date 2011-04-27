@@ -17,6 +17,9 @@
 package be.Balor.Workers;
 
 import java.util.HashMap;
+
+import org.bukkit.block.Block;
+
 import be.Balor.bukkit.Tomb.Tomb;
 import be.Balor.bukkit.Tomb.TombPlugin;
 
@@ -89,7 +92,18 @@ public class TombWorker extends Worker {
 	 * @return the tombs of the player
 	 */
 	public Tomb getTomb(String player) {
+		
 		return tombs.get(player);
+	}
+	public Tomb getTomb(Block sign)
+	{
+		for(String name : tombs.keySet())
+		{
+			Tomb result;
+			if((result=tombs.get(name)).hasSign(sign))
+				return result;
+		}
+		return null;
 	}
 
 }
