@@ -4,6 +4,11 @@
   <artifactId>Tomb</artifactId>
   <version>0.1</version>
   <name>Tomb</name>
+  <scm>
+  	<connection>git@github.com:Belphemur/Tomb.git</connection>
+  	<developerConnection>Balor</developerConnection>
+  	<url>https://github.com/Belphemur/Tomb</url>
+  </scm>
   <build>
   	<defaultGoal>clean install</defaultGoal>
   </build>
@@ -68,4 +73,7 @@
   		<version>4.6.5</version>
   	</dependency>
   </dependencies>
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>
