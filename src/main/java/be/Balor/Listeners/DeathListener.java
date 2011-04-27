@@ -52,6 +52,7 @@ public class DeathListener extends EntityListener {
 						signtext = howtheydied[2];
 					tomb.addDeath();
 					tomb.setReason("Die by " +signtext);
+					tomb.setDeathLoc(player.getLocation());
 				}
 
 			}
