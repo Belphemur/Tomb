@@ -53,19 +53,21 @@ public class Tomb {
 	 * update the sign in the game
 	 */
 	private void setLine(final int line, final String message) {
+		for (final Block block : signBlocks) {
 		TombPlugin
 				.getBukkitServer()
 				.getScheduler()
 				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(),
 						new Runnable() {
 							public void run() {
-								for (Block block : signBlocks) {
+								
 									Sign sign = (Sign) block.getState();
 									sign.setLine(line, message);
 									sign.update(true);
-								}
+								
 							}
 						});
+		}
 	}
 
 	/**
