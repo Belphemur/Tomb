@@ -52,22 +52,17 @@ public class Tomb {
 	/**
 	 * update the sign in the game
 	 */
-	private void setLine(final int line, final String message) {
-		for (final Block block : signBlocks) {
-		TombPlugin
-				.getBukkitServer()
-				.getScheduler()
-				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(),
-						new Runnable() {
-							public void run() {
-								
-									Sign sign = (Sign) block.getState();
-									sign.setLine(line, message);
-									sign.update(true);
-								
-							}
-						});
-		}
+	private void setLine(final int line, final String message) {		
+		TombPlugin.getBukkitServer().getScheduler()
+				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					public void run() {
+						for (Block block : signBlocks) {
+							Sign sign = (Sign) block.getState();
+							sign.setLine(line, message);
+							sign.update();
+						}
+					}
+				});
 	}
 
 	/**
@@ -103,8 +98,10 @@ public class Tomb {
 	public void setDeathLoc(Location deathLoc) {
 		this.deathLoc = deathLoc;
 	}
+
 	/**
-	 * @param deaths the deaths to set
+	 * @param deaths
+	 *            the deaths to set
 	 */
 	public void setDeaths(int deaths) {
 		this.deaths = deaths;
@@ -122,13 +119,11 @@ public class Tomb {
 	 *            the signBlock to set
 	 */
 	public void addSignBlock(Block sign) {
-		if (sign.getType() == Material.WALL_SIGN
-				|| sign.getType() == Material.SIGN
+		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
 		} else
-			throw new InputMismatchException(
-					"The block must be a SIGN or WALL_SIGN or SIGN_POST");
+			throw new InputMismatchException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
 	}
 
 	/**
@@ -178,12 +173,13 @@ public class Tomb {
 	public ArrayList<Block> getSignBlocks() {
 		return signBlocks;
 	}
+
 	/**
 	 * To save the Tomb
+	 * 
 	 * @return
 	 */
-	public TombSave save()
-	{
+	public TombSave save() {
 		return new TombSave(this);
 	}
 
