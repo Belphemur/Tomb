@@ -37,6 +37,10 @@ public class Tomb {
 	protected String reason;
 	protected Location deathLoc;
 
+	public Tomb() {
+		this.signBlocks = new ArrayList<Block>();
+	}
+
 	/**
 	 * 
 	 */
@@ -96,6 +100,12 @@ public class Tomb {
 	 */
 	public void setDeathLoc(Location deathLoc) {
 		this.deathLoc = deathLoc;
+	}
+	/**
+	 * @param deaths the deaths to set
+	 */
+	public void setDeaths(int deaths) {
+		this.deaths = deaths;
 	}
 
 	/**
@@ -158,6 +168,13 @@ public class Tomb {
 	 */
 	public int getDeaths() {
 		return deaths;
+	}
+
+	/**
+	 * @return the signBlocks
+	 */
+	public ArrayList<Block> getSignBlocks() {
+		return signBlocks;
 	}
 
 }
