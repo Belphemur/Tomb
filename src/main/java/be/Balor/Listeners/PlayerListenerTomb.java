@@ -53,7 +53,7 @@ public class PlayerListenerTomb extends PlayerListener {
 				Player p = event.getPlayer();
 				if (worker.hasTomb(p.getName())) {
 					Tomb tomb = worker.getTomb(p.getName());
-					if (tomb.getSignBlock().equals(block)) {
+					if (tomb.hasSign(block)) {
 						Location toTp;
 						if ((toTp = tomb.getDeathLoc()) != null)
 							p.teleport(toTp);

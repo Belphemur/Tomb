@@ -16,6 +16,7 @@
  ************************************************************************/
 package be.Balor.bukkit.Tomb;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 import org.bukkit.Location;
@@ -30,9 +31,8 @@ import be.Balor.Workers.TombWorker;
  * 
  */
 public class Tomb {
-	protected Block signBlock;
+	protected ArrayList<Block> signBlocks;
 	protected int deaths = 0;
-	protected String worldName;
 	protected String playerName;
 	protected String reason;
 	protected Location deathLoc;
@@ -41,26 +41,27 @@ public class Tomb {
 	 * 
 	 */
 	public Tomb(Block sign) throws InputMismatchException {
-		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
-				|| sign.getType() == Material.SIGN_POST) {
-			this.signBlock = sign;
-			worldName = sign.getWorld().getName();
-		} else
-			throw new InputMismatchException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+		this.signBlocks = new ArrayList<Block>();
+		addSignBlock(sign);
 	}
 
 	/**
 	 * update the sign in the game
 	 */
 	private void setLine(final int line, final String message) {
-		TombPlugin.getBukkitServer().getScheduler()
-				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-					public void run() {
-						Sign sign = (Sign) signBlock.getState();
-						sign.setLine(line, message);
-						sign.update();
-					}
-				});
+		TombPlugin
+				.getBukkitServer()
+				.getScheduler()
+				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(),
+						new Runnable() {
+							public void run() {
+								for (Block block : signBlocks) {
+									Sign sign = (Sign) block.getState();
+									sign.setLine(line, message);
+									sign.update();
+								}
+							}
+						});
 	}
 
 	/**
@@ -108,8 +109,34 @@ public class Tomb {
 	 * @param signBlock
 	 *            the signBlock to set
 	 */
-	public void setSignBlock(Block signBlock) {
-		this.signBlock = signBlock;
+	public void addSignBlock(Block sign) {
+		if (sign.getType() == Material.WALL_SIGN
+				|| sign.getType() == Material.SIGN
+				|| sign.getType() == Material.SIGN_POST) {
+			this.signBlocks.add(sign);
+		} else
+			throw new InputMismatchException(
+					"The block must be a SIGN or WALL_SIGN or SIGN_POST");
+	}
+
+	/**
+	 * Remove the given sign from the list.
+	 * 
+	 * @param sign
+	 */
+	public void removeSignBlock(Block sign) {
+		if (hasSign(sign))
+			signBlocks.remove(sign);
+	}
+
+	/**
+	 * Check if the block is used as a tomb.
+	 * 
+	 * @param sign
+	 * @return
+	 */
+	public boolean hasSign(Block sign) {
+		return signBlocks.contains(sign);
 	}
 
 	/**
@@ -127,24 +154,10 @@ public class Tomb {
 	}
 
 	/**
-	 * @return the signBlock
-	 */
-	public Block getSignBlock() {
-		return signBlock;
-	}
-
-	/**
 	 * @return the deaths
 	 */
 	public int getDeaths() {
 		return deaths;
-	}
-
-	/**
-	 * @return the world
-	 */
-	public String getWorld() {
-		return worldName;
 	}
 
 }

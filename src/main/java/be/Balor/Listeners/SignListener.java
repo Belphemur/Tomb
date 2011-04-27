@@ -52,7 +52,7 @@ public class SignListener extends BlockListener {
 			Block block = e.getBlock();
 			if (worker.hasTomb(deadName)) {
 				tomb = worker.getTomb(deadName);
-				tomb.setSignBlock(block);
+				tomb.addSignBlock(block);
 			} else
 				tomb = new Tomb(block);
 
@@ -72,7 +72,7 @@ public class SignListener extends BlockListener {
 				if (worker.hasPerm(event.getPlayer(), "tomb.admin"))
 					return;
 				if (worker.hasTomb(playerName)) {
-					if (!worker.getTomb(playerName).getSignBlock().equals(block))
+					if (!worker.getTomb(playerName).hasSign(block))
 						event.setCancelled(true);
 				} else
 					event.setCancelled(true);
