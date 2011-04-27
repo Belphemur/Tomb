@@ -12,7 +12,37 @@
   		<id>bukkit-repo</id>
   		<url>http://repo.bukkit.org/artifactory/repo</url>
   	</repository>
+  	<repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>libs-release</name>
+          <url>http://gestdown.info:8888/artifactory/libs-release</url>
+        </repository>
+        <repository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>libs-snapshot</name>
+          <url>http://gestdown.info:8888/artifactory/libs-snapshot</url>
+        </repository>
   </repositories>
+  <pluginRepositories>
+        <pluginRepository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>plugins-release</name>
+          <url>http://gestdown.info:8888/artifactory/plugins-release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>plugins-snapshot</name>
+          <url>http://gestdown.info:8888/artifactory/plugins-snapshot</url>
+        </pluginRepository>
+      </pluginRepositories>
   <dependencies>
   	<dependency>
   		<groupId>org.bukkit</groupId>
