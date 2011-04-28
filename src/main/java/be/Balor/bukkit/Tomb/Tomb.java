@@ -52,17 +52,23 @@ public class Tomb {
 	/**
 	 * update the sign in the game
 	 */
-	private void setLine(final int line, final String message) {		
-		TombPlugin.getBukkitServer().getScheduler()
-				.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-					public void run() {
-						for (Block block : signBlocks) {
-							Sign sign = (Sign) block.getState();
-							sign.setLine(line, message);
-							sign.update();
-						}
-					}
-				});
+	private void setLine(final int line, final String message) {
+		if (!signBlocks.isEmpty())
+			TombPlugin
+					.getBukkitServer()
+					.getScheduler()
+					.scheduleSyncDelayedTask(
+							TombWorker.getInstance().getPlugin(),
+							new Runnable() {
+								public void run() {
+									Sign sign;
+									for (Block block : signBlocks) {
+										sign = (Sign) block.getState();
+										sign.setLine(line, message);
+										sign.update();
+									}
+								}
+							});
 	}
 
 	/**
@@ -119,11 +125,13 @@ public class Tomb {
 	 *            the signBlock to set
 	 */
 	public void addSignBlock(Block sign) {
-		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
+		if (sign.getType() == Material.WALL_SIGN
+				|| sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
 		} else
-			throw new InputMismatchException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+			throw new InputMismatchException(
+					"The block must be a SIGN or WALL_SIGN or SIGN_POST");
 	}
 
 	/**
