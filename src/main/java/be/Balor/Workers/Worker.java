@@ -56,7 +56,7 @@ public abstract class Worker {
 	 */
 	public boolean hasPerm(Player player, String perm, boolean errorMsg) {
 		if (permission == null) {
-			if (perm.contains("admin"))
+			if (perm.contains("admin") || perm.contains("free"))
 				return player.isOp();
 			return true;
 		}
