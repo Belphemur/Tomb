@@ -165,9 +165,9 @@ public class LocaleWorker {
 			tmp.add("By Zeus");
 			tmp.add("By Thor");
 			tmp.add("Lighting");
-			localeFile.setProperty("locale.Lighting",
+			localeFile.setProperty("locale.lighting",
 					(ArrayList<String>) tmp.clone());
-			locales.put("Lighting", (ArrayList<String>) tmp.clone());
+			locales.put("lighting", (ArrayList<String>) tmp.clone());
 			tmp.clear();
 			tmp.add("Unknown");
 			localeFile.setProperty("locale.unknown",
