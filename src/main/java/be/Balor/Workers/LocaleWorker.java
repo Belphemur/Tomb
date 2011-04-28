@@ -192,9 +192,8 @@ public class LocaleWorker {
 	}
 
 	public String getPvpLocale(String killer) {
-		String msg = getLocale("pvp");
-		msg.replace("%k", killer);
-		return msg;
+		String msg = getLocale("pvp");		
+		return msg.replace("%k", killer);
 	}
 
 	/**
