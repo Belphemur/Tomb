@@ -11,6 +11,7 @@
   </scm>
   <build>
   	<defaultGoal>clean install</defaultGoal>
+  	<finalName>Tomb</finalName>
   </build>
   <repositories>
   	<repository>
