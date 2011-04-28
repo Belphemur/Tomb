@@ -16,9 +16,11 @@
  ************************************************************************/
 package be.Balor.Workers;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.bukkit.block.Block;
+import org.bukkit.util.config.Configuration;
 
 import be.Balor.bukkit.Tomb.Tomb;
 import be.Balor.bukkit.Tomb.TombPlugin;
@@ -32,6 +34,7 @@ public class TombWorker extends Worker {
 	protected HashMap<String, Tomb> tombs = new HashMap<String, Tomb>();
 	protected TombPlugin pluginInstance;
 	protected SaveSystem saveSys;
+	protected Configuration config;
 
 	public static TombWorker getInstance() {
 		if (instance == null)
@@ -50,6 +53,29 @@ public class TombWorker extends Worker {
 	public void setPluginInstance(TombPlugin pluginInstance) {
 		this.pluginInstance = pluginInstance;
 		saveSys = new SaveSystem(pluginInstance.getDataFolder().getPath());
+		configInit();
+	}
+
+	/**
+	 * Check if the config file exist, load it if exist else create it
+	 */
+	private void configInit() {
+		config = pluginInstance.getConfiguration();
+		if(!new File(pluginInstance.getDataFolder().getPath()+File.separator+"config.yml").exists())
+		{			
+			config.setProperty("reset-deathloc", true);
+			config.setProperty("use-iConomy", true);
+			config.setProperty("creation-price", 10.0D);
+			config.setProperty("deathtp-price",50.0D);
+			config.save();
+		}
+		config.load();
+	}
+	/**
+	 * @return the config
+	 */
+	public Configuration getConfig() {
+		return config;
 	}
 
 	/**
@@ -111,8 +137,8 @@ public class TombWorker extends Worker {
 		saveSys.save(tombs);
 		log.info("[Tomb] Tombs saved !");
 	}
-	public synchronized void load()
-	{
+
+	public synchronized void load() {
 		tombs = saveSys.load();
 		log.info("[Tomb] Tombs loaded !");
 	}
