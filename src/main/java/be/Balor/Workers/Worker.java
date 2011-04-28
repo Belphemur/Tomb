@@ -55,8 +55,11 @@ public abstract class Worker {
 	 * @return
 	 */
 	public boolean hasPerm(Player player, String perm, boolean errorMsg) {
-		if (permission == null)
+		if (permission == null) {
+			if (perm.contains("admin"))
+				return player.isOp();
 			return true;
+		}
 		String playerName = player.getName();
 		if (permissions.containsKey(playerName)) {
 			if (permissions.get(playerName).containsKey(perm))
