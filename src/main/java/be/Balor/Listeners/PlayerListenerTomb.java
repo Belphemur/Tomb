@@ -55,8 +55,11 @@ public class PlayerListenerTomb extends PlayerListener {
 					Tomb tomb = worker.getTomb(p.getName());
 					if (tomb.hasSign(block)) {
 						Location toTp;
-						if ((toTp = tomb.getDeathLoc()) != null)
+						if ((toTp = tomb.getDeathLoc()) != null) {
 							p.teleport(toTp);
+							if (worker.getConfig().getBoolean("reset-deathloc", true))
+								tomb.setDeathLoc(null);
+						}
 					}
 				}
 			}
