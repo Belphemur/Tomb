@@ -206,10 +206,10 @@ public class LocaleWorker {
 		Random rand = new Random();
 		if (locales.containsKey(death)) {
 			ArrayList<String> deaths = locales.get(death);
-			return deaths.get(rand.nextInt(deaths.size() - 1));
+			return deaths.get(rand.nextInt(deaths.size()));
 		} else if (locales.containsKey("unknown")) {
 			ArrayList<String> unknowns = locales.get("unknown");
-			return unknowns.get(rand.nextInt(unknowns.size() - 1));
+			return unknowns.get(rand.nextInt(unknowns.size()));
 		} else
 			return "";
 	}
