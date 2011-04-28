@@ -21,6 +21,8 @@ import java.util.InputMismatchException;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
+import be.Balor.Workers.TombWorker;
+
 /**
  * @author Balor (aka Antoine Aflalo)
  * 
@@ -51,6 +53,7 @@ public class TombSave implements Serializable {
 			try {
 				tomb.addSignBlock(loc.getBlock());
 			} catch (InputMismatchException e) {
+				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed.");
 			}
 		}
 		tomb.setDeathLoc(deathLoc.getLoc());
@@ -59,7 +62,6 @@ public class TombSave implements Serializable {
 		tomb.setReason(reason);
 		return tomb;
 	}
-
 }
 
 class LocSave implements Serializable {
