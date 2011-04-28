@@ -136,6 +136,7 @@ public class LocaleWorker {
 			localeFile.setProperty("locale.slime",
 					(ArrayList<String>) tmp.clone());
 			locales.put("slime", (ArrayList<String>) tmp.clone());
+			tmp.clear();
 			tmp.add("Suffocated");
 			tmp.add("Sand's breath");
 			tmp.add("Sand worm");
