@@ -19,9 +19,10 @@ package be.Balor.Workers;
 import java.io.File;
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
-
 import be.Balor.bukkit.Tomb.Tomb;
 import be.Balor.bukkit.Tomb.TombPlugin;
 
@@ -35,6 +36,7 @@ public class TombWorker extends Worker {
 	protected TombPlugin pluginInstance;
 	protected SaveSystem saveSys;
 	protected Configuration config;
+	public String graveDigger = "[" + ChatColor.GOLD + "Gravedigger" + ChatColor.WHITE + "] ";
 
 	public static TombWorker getInstance() {
 		if (instance == null)
@@ -61,16 +63,53 @@ public class TombWorker extends Worker {
 	 */
 	private void configInit() {
 		config = pluginInstance.getConfiguration();
-		if(!new File(pluginInstance.getDataFolder().getPath()+File.separator+"config.yml").exists())
-		{			
+		if (!new File(pluginInstance.getDataFolder().getPath() + File.separator + "config.yml")
+				.exists()) {
 			config.setProperty("reset-deathloc", true);
 			config.setProperty("use-iConomy", true);
 			config.setProperty("creation-price", 10.0D);
-			config.setProperty("deathtp-price",50.0D);
+			config.setProperty("deathtp-price", 50.0D);
 			config.save();
 		}
 		config.load();
 	}
+
+	/**
+	 * Function to check if iConomy is found and the setting used for it.
+	 * 
+	 * @param player
+	 * @param action
+	 * @return
+	 */
+	public boolean iConomyCheck(Player player, String action) {
+		if (Worker.getiConomy() != null && this.getConfig().getBoolean("use-iConomy", true)
+				&& !this.hasPerm(player, "tomb.free", false)) {
+			if (com.nijiko.coelho.iConomy.iConomy.getBank().hasAccount(player.getName())) {
+				if (com.nijiko.coelho.iConomy.iConomy.getBank().getAccount(player.getName())
+						.getBalance() < this.getConfig().getDouble(action, 1.0)) {
+					player.sendMessage(graveDigger + ChatColor.RED + "You don't have enough "
+							+ com.nijiko.coelho.iConomy.iConomy.getBank().getCurrency()
+							+ " to paying me.");
+					return false;
+				} else {
+					com.nijiko.coelho.iConomy.iConomy.getBank().getAccount(player.getName())
+							.subtract(this.getConfig().getDouble(action, 1.0));
+					if (this.getConfig().getDouble(action, 1.0) != 0)
+						player.sendMessage(graveDigger + this.getConfig().getDouble(action, 1.0)
+								+ " " + com.nijiko.coelho.iConomy.iConomy.getBank().getCurrency()
+								+ ChatColor.DARK_GRAY + " used to paying me.");
+					return true;
+				}
+
+			} else {
+				player.sendMessage(graveDigger + ChatColor.RED
+						+ "You must have an account to paying me.");
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * @return the config
 	 */

@@ -43,8 +43,8 @@ public class SignListener extends BlockListener {
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(e.getPlayer(), "tomb.admin"))
 				admin = true;
-			if(!admin && !worker.hasPerm(e.getPlayer(), "tomb.create"))
-			{
+			if ((!admin && !worker.hasPerm(e.getPlayer(), "tomb.create"))
+					|| !worker.iConomyCheck(e.getPlayer(), "creation-price")) {
 				e.setCancelled(true);
 				return;
 			}
