@@ -28,6 +28,7 @@ import be.Balor.Listeners.DeathListener;
 import be.Balor.Listeners.PlayerListenerTomb;
 import be.Balor.Listeners.PluginListener;
 import be.Balor.Listeners.SignListener;
+import be.Balor.Listeners.WorldSaveListener;
 import be.Balor.Workers.TombWorker;
 
 /**
@@ -58,7 +59,8 @@ public class TombPlugin extends JavaPlugin {
 		SignListener sL = new SignListener();
 		PlayerListenerTomb pLt = new PlayerListenerTomb();
 		DeathListener dL = new DeathListener();
-		PluginManager pm = getServer().getPluginManager();
+		WorldSaveListener wSl = new WorldSaveListener();
+		PluginManager pm = getServer().getPluginManager();		
 		pm.registerEvent(Event.Type.SIGN_CHANGE, sL, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
@@ -66,6 +68,7 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, sL, Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, dL, Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, dL, Priority.High, this);
+		pm.registerEvent(Event.Type.WORLD_SAVE, wSl, Priority.Normal, this);
 	}
 
 	/*
