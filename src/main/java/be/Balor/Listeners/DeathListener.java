@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
+import be.Balor.Workers.LocaleWorker;
 import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.Tomb;
 
@@ -40,18 +41,22 @@ public class DeathListener extends EntityListener {
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
 				if (worker.hasTomb(player.getName())) {
-					String damagetype = lastDamageType.get(lastDamagePlayer.indexOf(player
-							.getName()));
+					String damagetype = lastDamageType.get(lastDamagePlayer
+							.indexOf(player.getName()));
 					String[] howtheydied;
 
 					howtheydied = damagetype.split(":");
 					Tomb tomb = worker.getTomb(player.getName());
 					String signtext;
-					signtext = howtheydied[0].toLowerCase();
+
 					if (howtheydied[0].equals("PVP"))
-						signtext = howtheydied[2];
+						signtext = LocaleWorker.getInstance().getPvpLocale(
+								howtheydied[2]);
+					else
+						signtext = LocaleWorker.getInstance().getLocale(
+								howtheydied[0].toLowerCase());
 					tomb.addDeath();
-					tomb.setReason("Die by " +signtext);
+					tomb.setReason(signtext);
 					tomb.setDeathLoc(player.getLocation());
 				}
 
@@ -137,7 +142,8 @@ public class DeathListener extends EntityListener {
 			}
 		}
 
-		if ((beforedamage.equals("GHAST") && lastdamage.equals("BLOCK_EXPLOSION"))
+		if ((beforedamage.equals("GHAST") && lastdamage
+				.equals("BLOCK_EXPLOSION"))
 				|| (beforedamage.equals("GHAST") && lastdamage.equals("GHAST"))) {
 			lastdamage = "GHAST";
 		}
@@ -146,7 +152,8 @@ public class DeathListener extends EntityListener {
 			lastDamagePlayer.add(player.getName());
 			lastDamageType.add(event.getCause().name());
 		} else {
-			lastDamageType.set(lastDamagePlayer.indexOf(player.getName()), lastdamage);
+			lastDamageType.set(lastDamagePlayer.indexOf(player.getName()),
+					lastdamage);
 		}
 
 		beforedamage = lastdamage;
