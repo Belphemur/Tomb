@@ -16,6 +16,7 @@ package be.Balor.bukkit.Tomb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -24,7 +25,7 @@ import org.bukkit.block.Block;
  * @author Balor (aka Antoine Aflalo)
  * 
  */
-public class TombSave implements Serializable{
+public class TombSave implements Serializable {
 	/**
 	 * 
 	 */
@@ -46,8 +47,12 @@ public class TombSave implements Serializable{
 
 	public Tomb load() {
 		Tomb tomb = new Tomb();
-		for (LocSave loc : signBlocks)
-			tomb.addSignBlock(loc.getBlock());
+		for (LocSave loc : signBlocks) {
+			try {
+				tomb.addSignBlock(loc.getBlock());
+			} catch (InputMismatchException e) {
+			}
+		}
 		tomb.setDeathLoc(deathLoc.getLoc());
 		tomb.setDeaths(deaths);
 		tomb.setPlayer(player);
@@ -83,12 +88,10 @@ class LocSave implements Serializable {
 	}
 
 	public Location getLoc() {
-		return new Location(TombPlugin.getBukkitServer().getWorld(world), x, y,
-				z);
+		return new Location(TombPlugin.getBukkitServer().getWorld(world), x, y, z);
 	}
 
 	public Block getBlock() {
-		return TombPlugin.getBukkitServer().getWorld(world)
-				.getBlockAt(getLoc());
+		return TombPlugin.getBukkitServer().getWorld(world).getBlockAt(getLoc());
 	}
 }
