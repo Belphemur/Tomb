@@ -71,6 +71,14 @@ public class Tomb {
 	}
 
 	/**
+	 * 
+	 * @return the number of sign block that the tomb has.
+	 */
+	public int getNbSign() {
+		return signBlocks.size();
+	}
+
+	/**
 	 * Increment the number of deaths
 	 */
 	public void addDeath() {

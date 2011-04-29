@@ -18,6 +18,7 @@ package be.Balor.Listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -39,14 +40,21 @@ public class SignListener extends BlockListener {
 	@Override
 	public void onSignChange(SignChangeEvent e) {
 		String line0 = e.getLine(0);
+		Player p = e.getPlayer();
 		boolean admin = false;
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
-			if (!e.getLine(1).isEmpty() && worker.hasPerm(e.getPlayer(), "tomb.admin"))
+			if (!e.getLine(1).isEmpty() && worker.hasPerm(p, "tomb.admin"))
 				admin = true;
-			if ((!admin && !worker.hasPerm(e.getPlayer(), "tomb.create"))
-					|| !worker.iConomyCheck(e.getPlayer(), "creation-price")) {
+			if ((!admin && !worker.hasPerm(p, "tomb.create"))
+					|| !worker.iConomyCheck(p, "creation-price")) {
 				e.setCancelled(true);
 				return;
+			}
+			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
+			if(maxTombs != 0 &&(worker.getNbTomb(p.getName()) + 1) > maxTombs)
+			{
+				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
+				e.setCancelled(true);
 			}
 			Tomb tomb;
 			String deadName;

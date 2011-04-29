@@ -70,9 +70,23 @@ public class TombWorker extends Worker {
 			config.setProperty("creation-price", 10.0D);
 			config.setProperty("deathtp-price", 50.0D);
 			config.setProperty("allow-tp", true);
+			config.setProperty("maxTombStone", 0);
 			config.save();
 		}
 		config.load();
+	}
+
+	/**
+	 * Return the number of tomb the player has.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public int getNbTomb(String player) {
+		if (hasTomb(player))
+			return tombs.get(player).getNbSign();
+		else
+			return 0;
 	}
 
 	/**
