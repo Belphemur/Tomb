@@ -55,6 +55,7 @@ public class SignListener extends BlockListener {
 			{
 				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
 				e.setCancelled(true);
+				return;
 			}
 			Tomb tomb;
 			String deadName;
