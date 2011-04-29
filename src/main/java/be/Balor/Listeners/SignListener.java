@@ -45,15 +45,16 @@ public class SignListener extends BlockListener {
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(p, "tomb.admin"))
 				admin = true;
-			if ((!admin && !worker.hasPerm(p, "tomb.create"))
-					|| !worker.iConomyCheck(p, "creation-price")) {
+			//max check
+			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);			
+			if (maxTombs != 0 && (worker.getNbTomb(p.getName()) + 1) > maxTombs) {
+				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
 				e.setCancelled(true);
 				return;
 			}
-			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
-			if(maxTombs != 0 &&(worker.getNbTomb(p.getName()) + 1) > maxTombs)
-			{
-				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
+			//perm and iConomy check
+			if ((!admin && !worker.hasPerm(p, "tomb.create"))
+					|| !worker.iConomyCheck(p, "creation-price")) {
 				e.setCancelled(true);
 				return;
 			}
