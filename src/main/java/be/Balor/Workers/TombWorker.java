@@ -69,6 +69,7 @@ public class TombWorker extends Worker {
 			config.setProperty("use-iConomy", true);
 			config.setProperty("creation-price", 10.0D);
 			config.setProperty("deathtp-price", 50.0D);
+			config.setProperty("allow-tp", true);
 			config.save();
 		}
 		config.load();

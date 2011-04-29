@@ -44,7 +44,10 @@ public class TombSave implements Serializable {
 		reason = tomb.getReason();
 		player = tomb.getPlayer();
 		deaths = tomb.getDeaths();
-		deathLoc = new LocSave(tomb.getDeathLoc());
+		if (tomb.getDeathLoc() != null)
+			deathLoc = new LocSave(tomb.getDeathLoc());
+		else
+			deathLoc = null;
 	}
 
 	public Tomb load() {
@@ -56,7 +59,10 @@ public class TombSave implements Serializable {
 				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed.");
 			}
 		}
-		tomb.setDeathLoc(deathLoc.getLoc());
+		if (deathLoc != null)
+			tomb.setDeathLoc(deathLoc.getLoc());
+		else
+			tomb.setDeathLoc(null);
 		tomb.setDeaths(deaths);
 		tomb.setPlayer(player);
 		tomb.setReason(reason);
