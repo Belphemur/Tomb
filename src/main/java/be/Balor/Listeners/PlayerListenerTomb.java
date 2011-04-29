@@ -48,7 +48,8 @@ public class PlayerListenerTomb extends PlayerListener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& (worker.getConfig().getBoolean("allow-tp", true) || worker.hasPerm(p, "tomb.tp"))) {
+				&& (worker.getConfig().getBoolean("allow-tp", true) || worker.hasPerm(p, "tomb.tp",
+						false))) {
 			Block block = event.getClickedBlock();
 			if (block.getType().equals(Material.WALL_SIGN)
 					|| block.getType().equals(Material.SIGN_POST)) {
