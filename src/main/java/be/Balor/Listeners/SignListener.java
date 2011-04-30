@@ -74,11 +74,11 @@ public class SignListener extends BlockListener {
 			if (tomb != null) {
 				tomb.addSignBlock(block);
 			} else {
-				tomb = new Tomb(block);				
+				tomb = new Tomb(block);
 				worker.setTomb(deadName, tomb);
 			}
 			tomb.setPlayer(deadName);
-			
+
 		}
 
 	}
