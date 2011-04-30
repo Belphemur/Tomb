@@ -47,7 +47,7 @@ public class Tomb {
 	 * 
 	 */
 	public Tomb(Block sign) throws IllegalArgumentException {
-		this.signBlocks = new ArrayList<Block>();
+		this();
 		addSignBlock(sign);
 	}
 
@@ -56,36 +56,40 @@ public class Tomb {
 	 */
 	private void setLine(final int line, String message) {
 		if (!signBlocks.isEmpty()) {
-			if(message==null)
-				message="";
-			int length = message.length();
-			final String msg;
-			if (length > 14)
-				msg = message.substring(0, 14);
-			else
-				msg = message;
-			TombPlugin.getBukkitServer().getScheduler()
-					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-						@SuppressWarnings("unchecked")
-						public void run() {
-							try {
-								sem.acquire();
-							} catch (InterruptedException e) {
-								// e.printStackTrace();
-							}
-							Sign sign;
-							ArrayList<Block> signBlocksCopy = (ArrayList<Block>)signBlocks.clone();
-							for (Block block : signBlocksCopy) {
-								if (block.getState() instanceof Sign) {
-									sign = (Sign) block.getState();
-									sign.setLine(line, msg);
-									sign.update();
-								} else
-									signBlocks.remove(block);
-							}
-							sem.release();
-						}
-					});
+			if (message != null) {
+				int length = message.length();
+				final String msg;
+				if (length > 14)
+					msg = message.substring(0, 14);
+				else
+					msg = message;
+				TombPlugin
+						.getBukkitServer()
+						.getScheduler()
+						.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(),
+								new Runnable() {
+									@SuppressWarnings("unchecked")
+									public void run() {
+										try {
+											sem.acquire();
+										} catch (InterruptedException e) {
+											// e.printStackTrace();
+										}
+										Sign sign;
+										ArrayList<Block> signBlocksCopy = (ArrayList<Block>) signBlocks
+												.clone();
+										for (Block block : signBlocksCopy) {
+											if (block.getState() instanceof Sign) {
+												sign = (Sign) block.getState();
+												sign.setLine(line, msg);
+												sign.update();
+											} else
+												signBlocks.remove(block);
+										}
+										sem.release();
+									}
+								});
+			}
 		}
 	}
 
@@ -107,7 +111,7 @@ public class Tomb {
 		} catch (InterruptedException e) {
 			// e.printStackTrace();
 		}
-		ArrayList<Block> signBlocksCopy = (ArrayList<Block>)signBlocks.clone();
+		ArrayList<Block> signBlocksCopy = (ArrayList<Block>) signBlocks.clone();
 		for (Block block : signBlocksCopy)
 			if (!(block.getState() instanceof Sign))
 				signBlocks.remove(block);
@@ -170,17 +174,16 @@ public class Tomb {
 	public void addSignBlock(Block sign) {
 		try {
 			sem.acquire();
-		} catch (InterruptedException e) {		
-			//e.printStackTrace();
+		} catch (InterruptedException e) {
+			// e.printStackTrace();
 		}
 		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
 			sem.release();
-		} else
-		{
+		} else {
 			sem.release();
-			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");		
+			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
 		}
 	}
 
