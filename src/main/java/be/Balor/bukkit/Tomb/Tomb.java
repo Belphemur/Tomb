@@ -56,6 +56,8 @@ public class Tomb {
 	 */
 	private void setLine(final int line, String message) {
 		if (!signBlocks.isEmpty()) {
+			if(message==null)
+				message="";
 			int length = message.length();
 			final String msg;
 			if (length > 14)
