@@ -61,7 +61,7 @@ public class Tomb {
 				msg = message;
 			TombPlugin.getBukkitServer().getScheduler()
 					.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-						public void run() {
+						public synchronized void run() {
 							Sign sign;
 							for (Block block : signBlocks) {
 								if (block.getState() instanceof Sign) {
@@ -87,7 +87,7 @@ public class Tomb {
 	/**
 	 * Check every block if they are always a sign.
 	 */
-	public void checkSign() {
+	public synchronized void checkSign() {
 		for (Block block : signBlocks)
 			if (!(block.getState() instanceof Sign))
 				signBlocks.remove(block);
