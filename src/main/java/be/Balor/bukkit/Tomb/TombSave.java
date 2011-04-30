@@ -16,8 +16,6 @@ package be.Balor.bukkit.Tomb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
@@ -55,8 +53,8 @@ public class TombSave implements Serializable {
 		for (LocSave loc : signBlocks) {
 			try {
 				tomb.addSignBlock(loc.getBlock());
-			} catch (InputMismatchException e) {
-				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed.");
+			} catch (IllegalArgumentException e) {
+				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed. :\n"+loc);
 			}
 		}
 		if (deathLoc != null)
@@ -101,5 +99,13 @@ class LocSave implements Serializable {
 
 	public Block getBlock() {
 		return TombPlugin.getBukkitServer().getWorld(world).getBlockAt(getLoc());
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "LocSave={World="+world+", x="+x+", y="+y+", z="+z+"}";
+		
 	}
 }
