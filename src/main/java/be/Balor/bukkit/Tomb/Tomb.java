@@ -17,6 +17,7 @@
 package be.Balor.bukkit.Tomb;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,9 +36,11 @@ public class Tomb {
 	protected String playerName;
 	protected String reason;
 	protected Location deathLoc;
+	protected Semaphore sem;
 
 	public Tomb() {
 		this.signBlocks = new ArrayList<Block>();
+		sem = new Semaphore(1);
 	}
 
 	/**
@@ -61,7 +64,12 @@ public class Tomb {
 				msg = message;
 			TombPlugin.getBukkitServer().getScheduler()
 					.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-						public synchronized void run() {
+						public void run() {
+							try {
+								sem.acquire();
+							} catch (InterruptedException e) {
+								// e.printStackTrace();
+							}
 							Sign sign;
 							for (Block block : signBlocks) {
 								if (block.getState() instanceof Sign) {
@@ -71,6 +79,7 @@ public class Tomb {
 								} else
 									signBlocks.remove(block);
 							}
+							sem.release();
 						}
 					});
 		}
@@ -87,10 +96,16 @@ public class Tomb {
 	/**
 	 * Check every block if they are always a sign.
 	 */
-	public synchronized void checkSign() {
+	public void checkSign() {
+		try {
+			sem.acquire();
+		} catch (InterruptedException e) {
+			// e.printStackTrace();
+		}
 		for (Block block : signBlocks)
 			if (!(block.getState() instanceof Sign))
 				signBlocks.remove(block);
+		sem.release();
 	}
 
 	/**
