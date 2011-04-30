@@ -17,7 +17,6 @@
 package be.Balor.bukkit.Tomb;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,7 +43,7 @@ public class Tomb {
 	/**
 	 * 
 	 */
-	public Tomb(Block sign) throws InputMismatchException {
+	public Tomb(Block sign) throws IllegalArgumentException {
 		this.signBlocks = new ArrayList<Block>();
 		addSignBlock(sign);
 	}
@@ -52,8 +51,14 @@ public class Tomb {
 	/**
 	 * update the sign in the game
 	 */
-	private void setLine(final int line, final String message) {
-		if (!signBlocks.isEmpty())
+	private void setLine(final int line, String message) {
+		if (!signBlocks.isEmpty()) {
+			int length = message.length();
+			final String msg;
+			if (length > 14)
+				msg = message.substring(0, 14);
+			else
+				msg = message;
 			TombPlugin.getBukkitServer().getScheduler()
 					.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
 						public void run() {
@@ -61,13 +66,14 @@ public class Tomb {
 							for (Block block : signBlocks) {
 								if (block.getState() instanceof Sign) {
 									sign = (Sign) block.getState();
-									sign.setLine(line, message);
+									sign.setLine(line, msg);
 									sign.update();
 								} else
 									signBlocks.remove(block);
 							}
 						}
 					});
+		}
 	}
 
 	/**
@@ -136,7 +142,7 @@ public class Tomb {
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
 		} else
-			throw new InputMismatchException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
 	}
 
 	/**
