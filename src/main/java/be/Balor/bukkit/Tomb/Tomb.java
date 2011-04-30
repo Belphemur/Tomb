@@ -63,7 +63,8 @@ public class Tomb {
 			else
 				msg = message;
 			TombPlugin.getBukkitServer().getScheduler()
-					.scheduleSyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+						@SuppressWarnings("unchecked")
 						public void run() {
 							try {
 								sem.acquire();
@@ -71,7 +72,8 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							Sign sign;
-							for (Block block : signBlocks) {
+							ArrayList<Block> signBlocksCopy = (ArrayList<Block>)signBlocks.clone();
+							for (Block block : signBlocksCopy) {
 								if (block.getState() instanceof Sign) {
 									sign = (Sign) block.getState();
 									sign.setLine(line, msg);
@@ -96,13 +98,15 @@ public class Tomb {
 	/**
 	 * Check every block if they are always a sign.
 	 */
+	@SuppressWarnings("unchecked")
 	public void checkSign() {
 		try {
 			sem.acquire();
 		} catch (InterruptedException e) {
 			// e.printStackTrace();
 		}
-		for (Block block : signBlocks)
+		ArrayList<Block> signBlocksCopy = (ArrayList<Block>)signBlocks.clone();
+		for (Block block : signBlocksCopy)
 			if (!(block.getState() instanceof Sign))
 				signBlocks.remove(block);
 		sem.release();
@@ -162,11 +166,20 @@ public class Tomb {
 	 *            the signBlock to set
 	 */
 	public void addSignBlock(Block sign) {
+		try {
+			sem.acquire();
+		} catch (InterruptedException e) {		
+			//e.printStackTrace();
+		}
 		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
+			sem.release();
 		} else
-			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+		{
+			sem.release();
+			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");		
+		}
 	}
 
 	/**
