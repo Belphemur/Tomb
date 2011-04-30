@@ -45,34 +45,40 @@ public class SignListener extends BlockListener {
 		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(p, "tomb.admin"))
 				admin = true;
-			//max check
-			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);			
-			if (maxTombs != 0 && (worker.getNbTomb(p.getName()) + 1) > maxTombs) {
-				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
-				e.setCancelled(true);
-				return;
-			}
-			//perm and iConomy check
-			if ((!admin && !worker.hasPerm(p, "tomb.create"))
-					|| !worker.iConomyCheck(p, "creation-price")) {
-				e.setCancelled(true);
-				return;
-			}
-			Tomb tomb;
+			// Sign check
+			Tomb tomb = null;
 			String deadName;
 			if (admin)
 				deadName = e.getLine(1);
 			else
 				deadName = e.getPlayer().getName();
-			Block block = e.getBlock();
 			if (worker.hasTomb(deadName)) {
 				tomb = worker.getTomb(deadName);
-				tomb.addSignBlock(block);
-			} else
-				tomb = new Tomb(block);
+				tomb.checkSign();
+			}
+			// max check
+			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
+			if (maxTombs != 0 && (worker.getNbTomb(p.getName()) + 1) > maxTombs) {
+				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
+				e.setCancelled(true);
+				return;
+			}
+			// perm and iConomy check
+			if ((!admin && !worker.hasPerm(p, "tomb.create"))
+					|| !worker.iConomyCheck(p, "creation-price")) {
+				e.setCancelled(true);
+				return;
+			}
 
-			tomb.setPlayer(deadName);
-			worker.setTomb(deadName, tomb);
+			Block block = e.getBlock();
+			if (tomb != null) {
+				tomb.addSignBlock(block);
+			} else {
+				tomb = new Tomb(block);
+				tomb.setPlayer(deadName);
+				worker.setTomb(deadName, tomb);
+			}
+			
 		}
 
 	}

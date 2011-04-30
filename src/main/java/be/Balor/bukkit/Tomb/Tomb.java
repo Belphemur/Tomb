@@ -85,6 +85,15 @@ public class Tomb {
 	}
 
 	/**
+	 * Check every block if they are always a sign.
+	 */
+	public void checkSign() {
+		for (Block block : signBlocks)
+			if (!(block.getState() instanceof Sign))
+				signBlocks.remove(block);
+	}
+
+	/**
 	 * Increment the number of deaths
 	 */
 	public void addDeath() {
