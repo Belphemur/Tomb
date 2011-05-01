@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>be.Balor</groupId>
   <artifactId>Tomb</artifactId>
-  <version>0.4</version>
+  <version>0.4.1</version>
   <name>Tomb</name>
   <scm>
   	<connection>git@github.com:Belphemur/Tomb.git</connection>

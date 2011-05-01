@@ -80,6 +80,11 @@ public class Tomb {
 												sign = (Sign) block.getState();
 												sign.setLine(line, msg);
 												sign.update();
+												try {
+													Thread.sleep(100);
+												} catch (InterruptedException e) {
+													
+												}
 											} else
 												signBlocks.remove(block);
 										}
