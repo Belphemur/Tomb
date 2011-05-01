@@ -84,7 +84,7 @@ public class SignListener extends BlockListener {
 					tomb.setRespawn(p.getLocation());
 					if (admin)
 						p.sendMessage(worker.graveDigger + " When " + deadName
-								+ " die, he'll respawn here.");
+								+ " die, he/she will respawn here.");
 					else
 						p.sendMessage(worker.graveDigger + " When you die you'll respawn here.");
 				}

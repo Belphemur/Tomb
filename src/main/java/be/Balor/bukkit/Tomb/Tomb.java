@@ -39,6 +39,7 @@ public class Tomb {
 	protected Semaphore sema;
 	protected Location respawn;
 	protected long timeStamp;
+	protected Block lastBlock;
 
 	public Tomb() {
 		this.signBlocks = new CopyOnWriteArrayList<Block>();
@@ -222,28 +223,21 @@ public class Tomb {
 		TombPlugin.getBukkitServer().getScheduler()
 				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
 					public void run() {
-						try {
-							sema.acquire();
-						} catch (InterruptedException e) {
-							// e.printStackTrace();
-						}
 						Sign sign;
-						Block block = signBlocks.get(signBlocks.size() - 1);
+						Block block = lastBlock;
 						if (block.getState() instanceof Sign) {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+							}
 							sign = (Sign) block.getState();
 							sign.setLine(1, playerName);
 							sign.setLine(2, deaths + " Deaths");
 							if (reason != null && !reason.isEmpty())
 								sign.setLine(3, reason);
 							sign.update();
-							try {
-								Thread.sleep(101);
-							} catch (InterruptedException e) {
-
-							}
 
 						}
-						sema.release();
 					}
 				});
 	}
@@ -261,6 +255,7 @@ public class Tomb {
 		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
 			this.signBlocks.add(sign);
+			lastBlock = sign;
 			sema.release();
 		} else {
 			sema.release();
