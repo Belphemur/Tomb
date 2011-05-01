@@ -257,9 +257,9 @@ public class Tomb {
 			this.signBlocks.add(sign);
 			lastBlock = sign;
 			sema.release();
-		} else {
+		} else 
 			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
-		}
+		
 	}
 
 	/**
