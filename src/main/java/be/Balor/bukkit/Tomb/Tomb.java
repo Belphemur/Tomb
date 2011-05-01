@@ -71,8 +71,8 @@ public class Tomb {
 			if (message != null) {
 				int length = message.length();
 				final String msg;
-				if (length > 14)
-					msg = message.substring(0, 13);
+				if (length > 17)
+					msg = message.substring(0, 16);
 				else
 					msg = message;
 				TombPlugin
