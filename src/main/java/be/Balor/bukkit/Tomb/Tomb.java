@@ -40,7 +40,7 @@ public class Tomb {
 
 	public Tomb() {
 		this.signBlocks = new CopyOnWriteArrayList<Block>();
-		sem = new Semaphore(1);
+		sem = new Semaphore(2);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class Tomb {
 												try {
 													Thread.sleep(100);
 												} catch (InterruptedException e) {
-													
+
 												}
 											} else
 												signBlocks.remove(block);
@@ -107,15 +107,20 @@ public class Tomb {
 	 * Check every block if they are always a sign.
 	 */
 	public void checkSign() {
-		try {
-			sem.acquire();
-		} catch (InterruptedException e) {
-			// e.printStackTrace();
-		}
-		for (Block block : signBlocks)
-			if (!(block.getState() instanceof Sign))
-				signBlocks.remove(block);
-		sem.release();
+		TombPlugin.getBukkitServer().getScheduler()
+				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					public void run() {
+						try {
+							sem.acquire();
+						} catch (InterruptedException e) {
+							// e.printStackTrace();
+						}
+						for (Block block : signBlocks)
+							if (!(block.getState() instanceof Sign))
+								signBlocks.remove(block);
+						sem.release();
+					}
+				});
 	}
 
 	/**
@@ -166,12 +171,12 @@ public class Tomb {
 	public Location getDeathLoc() {
 		return deathLoc;
 	}
+
 	/**
 	 * Update all the lines.
 	 */
-	public void updateAll()
-	{
-		setLine(1,playerName);
+	public void updateAll() {
+		setLine(1, playerName);
 		setLine(2, deaths + " Deaths");
 		setLine(3, reason);
 	}
@@ -180,20 +185,32 @@ public class Tomb {
 	 * @param signBlock
 	 *            the signBlock to set
 	 */
-	public void addSignBlock(Block sign) {
-		try {
-			sem.acquire();
-		} catch (InterruptedException e) {
-			// e.printStackTrace();
-		}
-		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
-				|| sign.getType() == Material.SIGN_POST) {
-			this.signBlocks.add(sign);
-			sem.release();
-		} else {
-			sem.release();
-			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
-		}
+	public void addSignBlock(final Block sign) {
+		TombPlugin.getBukkitServer().getScheduler()
+				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					public void run() {
+						try {
+							sem.acquire();
+						} catch (InterruptedException e) {
+							// e.printStackTrace();
+						}
+						if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
+								|| sign.getType() == Material.SIGN_POST) {
+							signBlocks.add(sign);
+							sem.release();
+						} else {
+							sem.release();
+							TombPlugin
+									.getBukkitServer()
+									.getPlayer(playerName)
+									.sendMessage(
+											TombWorker.getInstance().graveDigger
+													+ " It's not a good place for a Tomb. Try somewhere else.");
+							throw new IllegalArgumentException(
+									"The block must be a SIGN or WALL_SIGN or SIGN_POST");
+						}
+					}
+				});
 	}
 
 	/**
@@ -201,9 +218,21 @@ public class Tomb {
 	 * 
 	 * @param sign
 	 */
-	public void removeSignBlock(Block sign) {
-		if (hasSign(sign))
-			signBlocks.remove(sign);
+	public void removeSignBlock(final Block sign) {
+		if (hasSign(sign)) {
+			TombPlugin.getBukkitServer().getScheduler()
+					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+						public void run() {
+							try {
+								sem.acquire();
+							} catch (InterruptedException e) {
+								// e.printStackTrace();
+							}
+							signBlocks.remove(sign);
+							sem.release();
+						}
+					});
+		}
 	}
 
 	/**
