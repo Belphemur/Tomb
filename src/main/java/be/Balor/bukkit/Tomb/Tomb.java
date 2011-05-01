@@ -40,7 +40,7 @@ public class Tomb {
 
 	public Tomb() {
 		this.signBlocks = new CopyOnWriteArrayList<Block>();
-		sem = new Semaphore(2);
+		sem = new Semaphore(1);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Tomb {
 												sign.setLine(line, msg);
 												sign.update();
 												try {
-													Thread.sleep(100);
+													Thread.sleep(50);
 												} catch (InterruptedException e) {
 
 												}
@@ -185,32 +185,26 @@ public class Tomb {
 	 * @param signBlock
 	 *            the signBlock to set
 	 */
-	public void addSignBlock(final Block sign) {
-		TombPlugin.getBukkitServer().getScheduler()
-				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-					public void run() {
-						try {
-							sem.acquire();
-						} catch (InterruptedException e) {
-							// e.printStackTrace();
-						}
-						if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
-								|| sign.getType() == Material.SIGN_POST) {
-							signBlocks.add(sign);
-							sem.release();
-						} else {
-							sem.release();
-							TombPlugin
-									.getBukkitServer()
-									.getPlayer(playerName)
-									.sendMessage(
-											TombWorker.getInstance().graveDigger
-													+ " It's not a good place for a Tomb. Try somewhere else.");
-							throw new IllegalArgumentException(
-									"The block must be a SIGN or WALL_SIGN or SIGN_POST");
-						}
-					}
-				});
+	public void addSignBlock(Block sign) {
+		try {
+			sem.acquire();
+		} catch (InterruptedException e) {
+			// e.printStackTrace();
+		}
+		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
+				|| sign.getType() == Material.SIGN_POST) {
+			this.signBlocks.add(sign);
+			sem.release();
+		} else {
+			sem.release();
+			TombPlugin
+					.getBukkitServer()
+					.getPlayer(playerName)
+					.sendMessage(
+							TombWorker.getInstance().graveDigger
+									+ " It's not a good place for a Tomb. Try somewhere else.");
+			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
+		}
 	}
 
 	/**
@@ -218,21 +212,9 @@ public class Tomb {
 	 * 
 	 * @param sign
 	 */
-	public void removeSignBlock(final Block sign) {
-		if (hasSign(sign)) {
-			TombPlugin.getBukkitServer().getScheduler()
-					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
-						public void run() {
-							try {
-								sem.acquire();
-							} catch (InterruptedException e) {
-								// e.printStackTrace();
-							}
-							signBlocks.remove(sign);
-							sem.release();
-						}
-					});
-		}
+	public void removeSignBlock(Block sign) {
+		if (hasSign(sign))
+			signBlocks.remove(sign);
 	}
 
 	/**
