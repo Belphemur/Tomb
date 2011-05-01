@@ -81,7 +81,7 @@ public class Tomb {
 												sign.setLine(line, msg);
 												sign.update();
 												try {
-													Thread.sleep(50);
+													Thread.sleep(101);
 												} catch (InterruptedException e) {
 
 												}
