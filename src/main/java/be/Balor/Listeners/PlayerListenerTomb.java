@@ -16,6 +16,7 @@
  ************************************************************************/
 package be.Balor.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -69,9 +70,21 @@ public class PlayerListenerTomb extends PlayerListener {
 					Tomb tomb = worker.getTomb(p.getName());
 					if (tomb.hasSign(block)) {
 						Location toTp;
-						if ((toTp = tomb.getDeathLoc()) != null
-								&& worker.iConomyCheck(p, "deathtp-price")) {
-							p.teleport(toTp);
+						if ((toTp = tomb.getDeathLoc()) != null) {
+							if (tomb.canTeleport()) {
+								if (worker.iConomyCheck(p, "deathtp-price")) {
+									p.teleport(toTp);
+									tomb.setTimeStamp(System.currentTimeMillis()
+											+ (int) (worker.getConfig().getDouble("cooldownTp",
+													5.0D) * 60000));
+								}
+							} else
+								p.sendMessage(worker.graveDigger + " You have to wait "
+										+ ChatColor.GOLD
+										+ (tomb.getTimeStamp() - System.currentTimeMillis())
+										/ 60000 + " mins" + ChatColor.WHITE
+										+ " to use th death tp.");
+
 							if (worker.getConfig().getBoolean("reset-deathloc", true))
 								tomb.setDeathLoc(null);
 

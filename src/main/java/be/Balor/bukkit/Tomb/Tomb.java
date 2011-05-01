@@ -38,9 +38,11 @@ public class Tomb {
 	protected Location deathLoc;
 	protected Semaphore sema;
 	protected Location respawn;
+	protected long timeStamp;
 
 	public Tomb() {
 		this.signBlocks = new CopyOnWriteArrayList<Block>();
+		timeStamp = 0;
 		sema = new Semaphore(1, true);
 	}
 
@@ -53,6 +55,14 @@ public class Tomb {
 	}
 
 	/**
+	 * 
+	 * @return if the user can use death tp.
+	 */
+	public boolean canTeleport() {
+		return (System.currentTimeMillis() >= timeStamp);
+	}
+
+	/**
 	 * update the sign in the game
 	 */
 	private void setLine(final int line, String message) {
@@ -61,7 +71,7 @@ public class Tomb {
 				int length = message.length();
 				final String msg;
 				if (length > 14)
-					msg = message.substring(0, 14);
+					msg = message.substring(0, 13);
 				else
 					msg = message;
 				TombPlugin
@@ -175,10 +185,25 @@ public class Tomb {
 	}
 
 	/**
+	 * @param timeStamp
+	 *            the timeStamp to set
+	 */
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	/**
 	 * @return the deathLoc
 	 */
 	public Location getDeathLoc() {
 		return deathLoc;
+	}
+
+	/**
+	 * @return the timeStamp
+	 */
+	public long getTimeStamp() {
+		return timeStamp;
 	}
 
 	/**
