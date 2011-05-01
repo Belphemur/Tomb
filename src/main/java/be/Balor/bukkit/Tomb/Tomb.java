@@ -16,7 +16,7 @@
  ************************************************************************/
 package be.Balor.bukkit.Tomb;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
 
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ import be.Balor.Workers.TombWorker;
  * 
  */
 public class Tomb {
-	protected ArrayList<Block> signBlocks;
+	protected CopyOnWriteArrayList<Block> signBlocks;
 	protected int deaths = 0;
 	protected String playerName;
 	protected String reason;
@@ -39,7 +39,7 @@ public class Tomb {
 	protected Semaphore sem;
 
 	public Tomb() {
-		this.signBlocks = new ArrayList<Block>();
+		this.signBlocks = new CopyOnWriteArrayList<Block>();
 		sem = new Semaphore(1);
 	}
 
@@ -68,7 +68,6 @@ public class Tomb {
 						.getScheduler()
 						.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(),
 								new Runnable() {
-									@SuppressWarnings("unchecked")
 									public void run() {
 										try {
 											sem.acquire();
@@ -76,9 +75,7 @@ public class Tomb {
 											// e.printStackTrace();
 										}
 										Sign sign;
-										ArrayList<Block> signBlocksCopy = (ArrayList<Block>) signBlocks
-												.clone();
-										for (Block block : signBlocksCopy) {
+										for (Block block : signBlocks) {
 											if (block.getState() instanceof Sign) {
 												sign = (Sign) block.getState();
 												sign.setLine(line, msg);
@@ -104,15 +101,13 @@ public class Tomb {
 	/**
 	 * Check every block if they are always a sign.
 	 */
-	@SuppressWarnings("unchecked")
 	public void checkSign() {
 		try {
 			sem.acquire();
 		} catch (InterruptedException e) {
 			// e.printStackTrace();
 		}
-		ArrayList<Block> signBlocksCopy = (ArrayList<Block>) signBlocks.clone();
-		for (Block block : signBlocksCopy)
+		for (Block block : signBlocks)
 			if (!(block.getState() instanceof Sign))
 				signBlocks.remove(block);
 		sem.release();
@@ -165,6 +160,15 @@ public class Tomb {
 	 */
 	public Location getDeathLoc() {
 		return deathLoc;
+	}
+	/**
+	 * Update all the lines.
+	 */
+	public void updateAll()
+	{
+		setLine(1,playerName);
+		setLine(2, deaths + " Deaths");
+		setLine(3, reason);
 	}
 
 	/**
@@ -231,7 +235,7 @@ public class Tomb {
 	/**
 	 * @return the signBlocks
 	 */
-	public ArrayList<Block> getSignBlocks() {
+	public CopyOnWriteArrayList<Block> getSignBlocks() {
 		return signBlocks;
 	}
 

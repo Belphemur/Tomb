@@ -58,7 +58,7 @@ public class SignListener extends BlockListener {
 			}
 			// max check
 			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
-			if (maxTombs != 0 && (worker.getNbTomb(p.getName()) + 1) > maxTombs) {
+			if (maxTombs != 0 && (worker.getNbTomb(deadName) + 1) > maxTombs) {
 				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
 				e.setCancelled(true);
 				return;
@@ -78,6 +78,7 @@ public class SignListener extends BlockListener {
 				worker.setTomb(deadName, tomb);
 			}
 			tomb.setPlayer(deadName);
+			tomb.updateAll();
 
 		}
 
