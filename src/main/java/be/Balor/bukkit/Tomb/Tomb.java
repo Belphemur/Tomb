@@ -247,18 +247,17 @@ public class Tomb {
 	 *            the signBlock to set
 	 */
 	public void addSignBlock(Block sign) {
-		try {
-			sema.acquire();
-		} catch (InterruptedException e) {
-			// e.printStackTrace();
-		}
 		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
 				|| sign.getType() == Material.SIGN_POST) {
+			try {
+				sema.acquire();
+			} catch (InterruptedException e) {
+				// e.printStackTrace();
+			}
 			this.signBlocks.add(sign);
 			lastBlock = sign;
 			sema.release();
 		} else {
-			sema.release();
 			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
 		}
 	}
