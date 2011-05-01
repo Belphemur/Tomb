@@ -85,7 +85,7 @@ public class PlayerListenerTomb extends PlayerListener {
 										+ ChatColor.GOLD
 										+ (tomb.getTimeStamp() - System.currentTimeMillis())
 										/ 60000 + " mins" + ChatColor.WHITE
-										+ " to use th death tp.");
+										+ " to use the death tp.");
 							}
 
 						}
