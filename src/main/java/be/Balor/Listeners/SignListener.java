@@ -79,7 +79,7 @@ public class SignListener extends BlockListener {
 					tomb.setPlayer(deadName);
 					worker.setTomb(deadName, tomb);
 				}
-				tomb.updateAll();
+				tomb.updateNewBlock();
 				if (worker.getConfig().getBoolean("use-tombAsSpawnPoint", true)) {
 					tomb.setRespawn(p.getLocation());
 					if (admin)
