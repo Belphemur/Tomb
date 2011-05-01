@@ -214,9 +214,10 @@ public class Tomb {
 		setLine(2, deaths + " Deaths");
 		setLine(3, reason);
 	}
-/**
- * Update the new block
- */
+
+	/**
+	 * Update the new block
+	 */
 	public void updateNewBlock() {
 		TombPlugin.getBukkitServer().getScheduler()
 				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
@@ -227,11 +228,13 @@ public class Tomb {
 							// e.printStackTrace();
 						}
 						Sign sign;
-						Block block = signBlocks.get(signBlocks.size()-1);
+						Block block = signBlocks.get(signBlocks.size() - 1);
 						if (block.getState() instanceof Sign) {
 							sign = (Sign) block.getState();
 							sign.setLine(1, playerName);
 							sign.setLine(2, deaths + " Deaths");
+							if (reason != null && !reason.isEmpty())
+								sign.setLine(3, reason);
 							sign.update();
 							try {
 								Thread.sleep(101);
