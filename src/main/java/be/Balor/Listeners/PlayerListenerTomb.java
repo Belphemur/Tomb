@@ -24,6 +24,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.Tomb;
@@ -42,6 +43,17 @@ public class PlayerListenerTomb extends PlayerListener {
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		// TODO
+	}
+
+	@Override
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player p = event.getPlayer();
+		if (worker.getConfig().getBoolean("use-tombAsSpawnPoint", true)
+				&& worker.hasTomb(p.getName())) {
+			Location respawn = worker.getTomb(p.getName()).getRespawn();
+			if (respawn != null)
+				event.setRespawnLocation(respawn);
+		}
 	}
 
 	@Override

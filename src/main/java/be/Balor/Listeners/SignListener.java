@@ -58,7 +58,7 @@ public class SignListener extends BlockListener {
 			}
 			// max check
 			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
-			if (maxTombs != 0 && (worker.getNbTomb(deadName) + 1) > maxTombs) {
+			if (!admin && maxTombs != 0 && (worker.getNbTomb(deadName) + 1) > maxTombs) {
 				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
 				e.setCancelled(true);
 				return;
@@ -69,16 +69,29 @@ public class SignListener extends BlockListener {
 				e.setCancelled(true);
 				return;
 			}
-
 			Block block = e.getBlock();
-			if (tomb != null) {
-				tomb.addSignBlock(block);
-			} else {
-				tomb = new Tomb(block);
-				worker.setTomb(deadName, tomb);
+			try {
+
+				if (tomb != null) {
+					tomb.addSignBlock(block);
+				} else {
+					tomb = new Tomb(block);
+					tomb.setPlayer(deadName);
+					worker.setTomb(deadName, tomb);
+				}
+				tomb.updateAll();
+				if (worker.getConfig().getBoolean("use-tombAsSpawnPoint", true)) {
+					tomb.setRespawn(p.getLocation());
+					if (admin)
+						p.sendMessage(worker.graveDigger + " When " + deadName
+								+ " die, he'll respawn here.");
+					else
+						p.sendMessage(worker.graveDigger + " When you die you'll respawn here.");
+				}
+			} catch (IllegalArgumentException e2) {
+				p.sendMessage(worker.graveDigger
+						+ " It's not a good place for a Tomb. Try somewhere else.");
 			}
-			tomb.setPlayer(deadName);
-			tomb.updateAll();
 
 		}
 

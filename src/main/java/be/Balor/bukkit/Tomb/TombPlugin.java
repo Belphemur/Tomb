@@ -60,7 +60,7 @@ public class TombPlugin extends JavaPlugin {
 		PlayerListenerTomb pLt = new PlayerListenerTomb();
 		DeathListener dL = new DeathListener();
 		WorldSaveListener wSl = new WorldSaveListener();
-		PluginManager pm = getServer().getPluginManager();		
+		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.SIGN_CHANGE, sL, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, pL, Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, pLt, Priority.Normal, this);
@@ -69,6 +69,7 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DEATH, dL, Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, dL, Priority.High, this);
 		pm.registerEvent(Event.Type.WORLD_SAVE, wSl, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_RESPAWN, pLt, Priority.Highest, this);
 	}
 
 	/*

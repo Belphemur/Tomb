@@ -72,6 +72,7 @@ public class TombWorker extends Worker {
 			config.setProperty("allow-tp", true);
 			config.setProperty("maxTombStone", 0);
 			config.setProperty("TombKeyword","[Tomb]");
+			config.setProperty("use-tombAsSpawnPoint", true);
 			config.save();
 		}
 		config.load();

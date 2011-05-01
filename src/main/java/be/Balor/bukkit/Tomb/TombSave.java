@@ -35,6 +35,7 @@ public class TombSave implements Serializable {
 	protected String player;
 	protected String reason;
 	protected LocSave deathLoc;
+	protected LocSave respawn;
 
 	public TombSave(Tomb tomb) {
 		for (Block b : tomb.getSignBlocks())
@@ -46,6 +47,10 @@ public class TombSave implements Serializable {
 			deathLoc = new LocSave(tomb.getDeathLoc());
 		else
 			deathLoc = null;
+		if (tomb.getRespawn() != null)
+			respawn = new LocSave(tomb.getRespawn());
+		else
+			respawn = null;
 	}
 
 	public Tomb load() {
@@ -54,13 +59,19 @@ public class TombSave implements Serializable {
 			try {
 				tomb.addSignBlock(loc.getBlock());
 			} catch (IllegalArgumentException e) {
-				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed. :\n"+loc);
+				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed. :\n"
+						+ loc);
 			}
 		}
 		if (deathLoc != null)
 			tomb.setDeathLoc(deathLoc.getLoc());
 		else
 			tomb.setDeathLoc(null);
+		
+		if (respawn != null)
+			tomb.setRespawn(respawn.getLoc());
+		else
+			tomb.setRespawn(null);
 		tomb.setDeaths(deaths);
 		tomb.setPlayer(player);
 		tomb.setReason(reason);
@@ -84,6 +95,7 @@ class LocSave implements Serializable {
 		z = loc.getZ();
 		world = loc.getWorld().getName();
 	}
+
 	public LocSave(Block block) {
 		this(block.getLocation());
 	}
@@ -95,12 +107,15 @@ class LocSave implements Serializable {
 	public Block getBlock() {
 		return TombPlugin.getBukkitServer().getWorld(world).getBlockAt(getLoc());
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "LocSave={World="+world+", x="+x+", y="+y+", z="+z+"}";
-		
+		return "LocSave={World=" + world + ", x=" + x + ", y=" + y + ", z=" + z + "}";
+
 	}
 }
