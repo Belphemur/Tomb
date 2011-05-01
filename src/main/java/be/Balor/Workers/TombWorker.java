@@ -71,6 +71,7 @@ public class TombWorker extends Worker {
 			config.setProperty("deathtp-price", 50.0D);
 			config.setProperty("allow-tp", true);
 			config.setProperty("maxTombStone", 0);
+			config.setProperty("TombKeyword","[Tomb]");
 			config.save();
 		}
 		config.load();

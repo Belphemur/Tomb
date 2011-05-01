@@ -42,7 +42,7 @@ public class SignListener extends BlockListener {
 		String line0 = e.getLine(0);
 		Player p = e.getPlayer();
 		boolean admin = false;
-		if (line0.indexOf("[Tomb]") == 0 && line0.indexOf("]") != -1) {
+		if (line0.indexOf(worker.getConfig().getString("TombKeyword", "[Tomb]")) == 0) {
 			if (!e.getLine(1).isEmpty() && worker.hasPerm(p, "tomb.admin"))
 				admin = true;
 			// Sign check
@@ -90,7 +90,7 @@ public class SignListener extends BlockListener {
 			Block block = event.getBlock();
 			String playerName = event.getPlayer().getName();
 			Sign sign = (Sign) block.getState();
-			if (sign.getLine(0).indexOf("[Tomb]") == 0 && sign.getLine(0).indexOf("]") != -1) {
+			if (sign.getLine(0).indexOf(worker.getConfig().getString("TombKeyword", "[Tomb]")) == 0) {
 				if (worker.hasPerm(event.getPlayer(), "tomb.admin")) {
 					Tomb tomb;
 					if ((tomb = worker.getTomb(block)) != null)

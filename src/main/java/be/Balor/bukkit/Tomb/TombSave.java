@@ -72,25 +72,20 @@ class LocSave implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8631716113887974333L;
+	private static final long serialVersionUID = 3307231458020728331L;
 	private double x;
 	private double y;
 	private double z;
 	private String world;
 
 	public LocSave(Location loc) {
-		initLocation(loc);
-	}
-
-	private void initLocation(Location loc) {
 		x = loc.getX();
 		y = loc.getY();
 		z = loc.getZ();
 		world = loc.getWorld().getName();
 	}
-
 	public LocSave(Block block) {
-		initLocation(block.getLocation());
+		this(block.getLocation());
 	}
 
 	public Location getLoc() {
