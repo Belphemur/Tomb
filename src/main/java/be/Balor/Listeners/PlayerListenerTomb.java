@@ -77,16 +77,16 @@ public class PlayerListenerTomb extends PlayerListener {
 									tomb.setTimeStamp(System.currentTimeMillis()
 											+ (int) (worker.getConfig().getDouble("cooldownTp",
 													5.0D) * 60000));
+									if (worker.getConfig().getBoolean("reset-deathloc", true))
+										tomb.setDeathLoc(null);
 								}
-							} else
+							} else {
 								p.sendMessage(worker.graveDigger + " You have to wait "
 										+ ChatColor.GOLD
 										+ (tomb.getTimeStamp() - System.currentTimeMillis())
 										/ 60000 + " mins" + ChatColor.WHITE
 										+ " to use th death tp.");
-
-							if (worker.getConfig().getBoolean("reset-deathloc", true))
-								tomb.setDeathLoc(null);
+							}
 
 						}
 					}
