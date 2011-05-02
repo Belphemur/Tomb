@@ -81,10 +81,10 @@ public class PlayerListenerTomb extends PlayerListener {
 										tomb.setDeathLoc(null);
 								}
 							} else {
+								long timeLeft = tomb.getTimeStamp() - System.currentTimeMillis();
 								p.sendMessage(worker.graveDigger + " You have to wait "
-										+ ChatColor.GOLD
-										+ (tomb.getTimeStamp() - System.currentTimeMillis())
-										/ 60000 + " mins" + ChatColor.WHITE
+										+ ChatColor.GOLD + timeLeft / 60000 + " mins"
+										+ (timeLeft / 1000) % 60 + "seconds" + ChatColor.WHITE
 										+ " to use the death tp.");
 							}
 
