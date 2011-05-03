@@ -71,7 +71,7 @@
   	<dependency>
   		<groupId>com.nijiko.iConomy</groupId>
   		<artifactId>iConomy</artifactId>
-  		<version>4.6.5</version>
+  		<version>5.0</version>
   	</dependency>
   </dependencies>
   <properties>

@@ -23,7 +23,7 @@ import org.bukkit.event.server.ServerListener;
 import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.TombPlugin;
 
-import com.nijiko.coelho.iConomy.iConomy;
+import com.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.plugin.Plugin;

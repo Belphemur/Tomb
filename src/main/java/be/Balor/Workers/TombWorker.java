@@ -71,7 +71,7 @@ public class TombWorker extends Worker {
 			config.setProperty("deathtp-price", 50.0D);
 			config.setProperty("allow-tp", true);
 			config.setProperty("maxTombStone", 0);
-			config.setProperty("TombKeyword","[Tomb]");
+			config.setProperty("TombKeyword", "[Tomb]");
 			config.setProperty("use-tombAsSpawnPoint", true);
 			config.setProperty("cooldownTp", 5.0D);
 			config.save();
@@ -102,19 +102,20 @@ public class TombWorker extends Worker {
 	public boolean iConomyCheck(Player player, String action) {
 		if (Worker.getiConomy() != null && this.getConfig().getBoolean("use-iConomy", true)
 				&& !this.hasPerm(player, "tomb.free", false)) {
-			if (com.nijiko.coelho.iConomy.iConomy.getBank().hasAccount(player.getName())) {
-				if (com.nijiko.coelho.iConomy.iConomy.getBank().getAccount(player.getName())
-						.getBalance() < this.getConfig().getDouble(action, 1.0)) {
-					player.sendMessage(graveDigger + ChatColor.RED + "You don't have enough "
-							+ com.nijiko.coelho.iConomy.iConomy.getBank().getCurrency()
-							+ " to paying me.");
+			if (com.iConomy.iConomy.hasAccount(player.getName())) {
+				if (com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
+						.hasEnough(this.getConfig().getDouble(action, 1.0))) {
+					player.sendMessage(graveDigger
+							+ ChatColor.RED
+							+ "You don't have enough "
+							+ com.iConomy.iConomy.format(com.iConomy.iConomy.getAccount(
+									player.getName()).getName()) + " to paying me.");
 					return false;
 				} else {
-					com.nijiko.coelho.iConomy.iConomy.getBank().getAccount(player.getName())
+					com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
 							.subtract(this.getConfig().getDouble(action, 1.0));
 					if (this.getConfig().getDouble(action, 1.0) != 0)
-						player.sendMessage(graveDigger + this.getConfig().getDouble(action, 1.0)
-								+ " " + com.nijiko.coelho.iConomy.iConomy.getBank().getCurrency()
+						player.sendMessage(graveDigger + com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0))
 								+ ChatColor.DARK_GRAY + " used to paying me.");
 					return true;
 				}

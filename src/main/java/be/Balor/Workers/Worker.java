@@ -23,7 +23,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.nijiko.coelho.iConomy.iConomy;
+import com.iConomy.iConomy;
 
 /**
  * @author Balor (aka Antoine Aflalo)
