@@ -103,13 +103,12 @@ public class TombWorker extends Worker {
 		if (Worker.getiConomy() != null && this.getConfig().getBoolean("use-iConomy", true)
 				&& !this.hasPerm(player, "tomb.free", false)) {
 			if (com.iConomy.iConomy.hasAccount(player.getName())) {
-				if (com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
+				if (!com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
 						.hasEnough(this.getConfig().getDouble(action, 1.0))) {
 					player.sendMessage(graveDigger
 							+ ChatColor.RED
-							+ "You don't have enough "
-							+ com.iConomy.iConomy.format(com.iConomy.iConomy.getAccount(
-									player.getName()).getName()) + " to paying me.");
+							+ "You don't have "
+							+ com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0)) + " to pay me.");
 					return false;
 				} else {
 					com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
