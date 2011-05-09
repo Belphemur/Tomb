@@ -25,6 +25,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import be.Balor.Workers.TombWorker;
@@ -43,7 +44,15 @@ public class PlayerListenerTomb extends PlayerListener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		// TODO
+		String playerName = event.getPlayer().getName();
+		if (worker.hasTomb(playerName)) {
+			worker.getTomb(playerName).checkSigns();
+		}
+	}
+
+	@Override
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		worker.removePermissionNode(event.getPlayer().getName());
 	}
 
 	@Override

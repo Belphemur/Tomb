@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Spider;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
@@ -41,8 +42,8 @@ public class DeathListener extends EntityListener {
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
 				if (worker.hasTomb(player.getName())) {
-					String damagetype = lastDamageType.get(lastDamagePlayer
-							.indexOf(player.getName()));
+					String damagetype = lastDamageType.get(lastDamagePlayer.indexOf(player
+							.getName()));
 					String[] howtheydied;
 
 					howtheydied = damagetype.split(":");
@@ -50,8 +51,7 @@ public class DeathListener extends EntityListener {
 					String signtext;
 
 					if (howtheydied[0].equals("PVP"))
-						signtext = LocaleWorker.getInstance().getPvpLocale(
-								howtheydied[2]);
+						signtext = LocaleWorker.getInstance().getPvpLocale(howtheydied[2]);
 					else
 						signtext = LocaleWorker.getInstance().getLocale(
 								howtheydied[0].toLowerCase());
@@ -130,7 +130,9 @@ public class DeathListener extends EntityListener {
 				} else if (mob instanceof Slime) {
 					lastdamage = "SLIME";
 				}
-			} else if (attacker instanceof Player) {
+			} else if (attacker instanceof Wolf)
+				lastdamage = "WOLF";
+			else if (attacker instanceof Player) {
 				Player pvper = (Player) attacker;
 				String usingitem = pvper.getItemInHand().getType().name();
 				if (usingitem == "AIR") {
@@ -142,8 +144,7 @@ public class DeathListener extends EntityListener {
 			}
 		}
 
-		if ((beforedamage.equals("GHAST") && lastdamage
-				.equals("BLOCK_EXPLOSION"))
+		if ((beforedamage.equals("GHAST") && lastdamage.equals("BLOCK_EXPLOSION"))
 				|| (beforedamage.equals("GHAST") && lastdamage.equals("GHAST"))) {
 			lastdamage = "GHAST";
 		}
@@ -152,11 +153,9 @@ public class DeathListener extends EntityListener {
 			lastDamagePlayer.add(player.getName());
 			lastDamageType.add(event.getCause().name());
 		} else {
-			lastDamageType.set(lastDamagePlayer.indexOf(player.getName()),
-					lastdamage);
+			lastDamageType.set(lastDamagePlayer.indexOf(player.getName()), lastdamage);
 		}
 
 		beforedamage = lastdamage;
 	}
-
 }

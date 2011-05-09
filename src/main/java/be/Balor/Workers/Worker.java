@@ -147,4 +147,13 @@ public abstract class Worker {
 		}
 		return true;
 	}
+
+	/**
+	 * Remove all permissions node for the player from the cache.
+	 * 
+	 * @param player
+	 */
+	public void removePermissionNode(String player) {
+		permissions.remove(player);
+	}
 }

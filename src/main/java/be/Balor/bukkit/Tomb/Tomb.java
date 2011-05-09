@@ -118,7 +118,7 @@ public class Tomb {
 	/**
 	 * Check every block if they are always a sign.
 	 */
-	public void checkSign() {
+	public void checkSigns() {
 		TombPlugin.getBukkitServer().getScheduler()
 				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
 					public void run() {

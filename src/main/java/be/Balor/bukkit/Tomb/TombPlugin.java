@@ -70,6 +70,8 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, dL, Priority.High, this);
 		pm.registerEvent(Event.Type.WORLD_SAVE, wSl, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, pLt, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, pLt, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, pLt, Priority.Normal, this);
 	}
 
 	/*

@@ -54,7 +54,7 @@ public class SignListener extends BlockListener {
 				deadName = e.getPlayer().getName();
 			if (worker.hasTomb(deadName)) {
 				tomb = worker.getTomb(deadName);
-				tomb.checkSign();
+				tomb.checkSigns();
 			}
 			// max check
 			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
