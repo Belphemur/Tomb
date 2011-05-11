@@ -3,7 +3,7 @@
  ************************************************************************/
 package be.Balor.Listeners;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -31,8 +31,7 @@ import be.Balor.bukkit.Tomb.Tomb;
  * 
  */
 public class DeathListener extends EntityListener {
-	protected ArrayList<String> lastDamagePlayer = new ArrayList<String>();
-	protected ArrayList<String> lastDamageType = new ArrayList<String>();
+	protected HashMap<String, String> lastPlayerDmg = new HashMap<String, String>();
 	protected String beforedamage = "";
 	protected TombWorker worker = TombWorker.getInstance();
 
@@ -42,8 +41,7 @@ public class DeathListener extends EntityListener {
 			if (event.getEntity() instanceof Player) {
 				Player player = (Player) event.getEntity();
 				if (worker.hasTomb(player.getName())) {
-					String damagetype = lastDamageType.get(lastDamagePlayer.indexOf(player
-							.getName()));
+					String damagetype = lastPlayerDmg.get(player.getName());
 					String[] howtheydied;
 
 					howtheydied = damagetype.split(":");
@@ -149,12 +147,7 @@ public class DeathListener extends EntityListener {
 			lastdamage = "GHAST";
 		}
 
-		if (!lastDamagePlayer.contains(player.getName())) {
-			lastDamagePlayer.add(player.getName());
-			lastDamageType.add(event.getCause().name());
-		} else {
-			lastDamageType.set(lastDamagePlayer.indexOf(player.getName()), lastdamage);
-		}
+		lastPlayerDmg.put(player.getName(), lastdamage);
 
 		beforedamage = lastdamage;
 	}
