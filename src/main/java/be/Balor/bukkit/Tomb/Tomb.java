@@ -64,46 +64,89 @@ public class Tomb {
 	}
 
 	/**
+	 * cut the msg to be sure that it don't exceed 18 char
+	 * 
+	 * @param message
+	 * @return
+	 */
+	private String cutMsg(String message) {
+		String msg = null;
+
+		if (message != null) {
+			int length = message.length();
+			if (length > 18)
+				msg = message.substring(0, 17);
+			else
+				msg = message;
+		}
+		return msg;
+	}
+
+	/**
 	 * update the sign in the game
 	 */
 	private void setLine(final int line, String message) {
 		if (!signBlocks.isEmpty()) {
-			if (message != null) {
-				int length = message.length();
-				final String msg;
-				if (length > 18)
-					msg = message.substring(0, 17);
-				else
-					msg = message;
-				TombPlugin
-						.getBukkitServer()
-						.getScheduler()
-						.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(),
-								new Runnable() {
-									public void run() {
-										try {
-											sema.acquire();
-										} catch (InterruptedException e) {
-											// e.printStackTrace();
-										}
-										Sign sign;
-										for (Block block : signBlocks) {
-											if (block.getState() instanceof Sign) {
-												sign = (Sign) block.getState();
-												sign.setLine(line, msg);
-												sign.update();
-												try {
-													Thread.sleep(101);
-												} catch (InterruptedException e) {
 
-												}
-											} else
-												signBlocks.remove(block);
-										}
-										sema.release();
+			final String msg = cutMsg(message);
+			TombPlugin.getBukkitServer().getScheduler()
+					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+						public void run() {
+							try {
+								sema.acquire();
+							} catch (InterruptedException e) {
+								// e.printStackTrace();
+							}
+							Sign sign;
+							for (Block block : signBlocks) {
+								if (block.getState() instanceof Sign) {
+									sign = (Sign) block.getState();
+									sign.setLine(line, msg);
+									sign.update();
+									try {
+										Thread.sleep(101);
+									} catch (InterruptedException e) {
+
 									}
-								});
-			}
+								} else
+									signBlocks.remove(block);
+							}
+							sema.release();
+						}
+					});
+		}
+	}
+
+	public void updateDeath() {
+		if (!signBlocks.isEmpty()) {
+			final String deathNb = cutMsg(deaths + " Deaths");
+			final String deathReason = cutMsg(reason);
+			TombPlugin.getBukkitServer().getScheduler()
+					.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+						public void run() {
+							try {
+								sema.acquire();
+							} catch (InterruptedException e) {
+								// e.printStackTrace();
+							}
+							Sign sign;
+							for (Block block : signBlocks) {
+								if (block.getState() instanceof Sign) {
+									sign = (Sign) block.getState();
+									sign.setLine(2, deathNb);
+									sign.setLine(3, deathReason);
+									sign.update();
+									try {
+										Thread.sleep(101);
+									} catch (InterruptedException e) {
+
+									}
+								} else
+									signBlocks.remove(block);
+							}
+							sema.release();
+						}
+					});
 		}
 	}
 
@@ -140,7 +183,6 @@ public class Tomb {
 	 */
 	public void addDeath() {
 		deaths++;
-		setLine(2, deaths + " Deaths");
 	}
 
 	/**
@@ -149,7 +191,6 @@ public class Tomb {
 	 */
 	public void setReason(String reason) {
 		this.reason = reason;
-		setLine(3, reason);
 	}
 
 	/**
@@ -214,6 +255,7 @@ public class Tomb {
 		setLine(1, playerName);
 		setLine(2, deaths + " Deaths");
 		setLine(3, reason);
+
 	}
 
 	/**
@@ -231,10 +273,10 @@ public class Tomb {
 							} catch (InterruptedException e) {
 							}
 							sign = (Sign) block.getState();
-							sign.setLine(1, playerName);
-							sign.setLine(2, deaths + " Deaths");
+							sign.setLine(1, cutMsg(playerName));
+							sign.setLine(2, cutMsg(deaths + " Deaths"));
 							if (reason != null && !reason.isEmpty())
-								sign.setLine(3, reason);
+								sign.setLine(3, cutMsg(reason));
 							sign.update();
 
 						}
@@ -257,9 +299,9 @@ public class Tomb {
 			this.signBlocks.add(sign);
 			lastBlock = sign;
 			sema.release();
-		} else 
+		} else
 			throw new IllegalArgumentException("The block must be a SIGN or WALL_SIGN or SIGN_POST");
-		
+
 	}
 
 	/**
