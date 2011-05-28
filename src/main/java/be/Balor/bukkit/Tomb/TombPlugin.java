@@ -50,6 +50,13 @@ public class TombPlugin extends JavaPlugin {
 	 */
 	public void onDisable() {
 		TombWorker.getInstance().save();
+		final TombPlugin instance = this;
+		server.getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			public void run() {
+				server.getScheduler().cancelTasks(instance);
+				TombWorker.killInstance();
+			}
+		}, 100);
 		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
 
 	}

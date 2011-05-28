@@ -44,11 +44,20 @@ public class TombSave implements Serializable {
 		player = tomb.getPlayer();
 		deaths = tomb.getDeaths();
 		if (tomb.getDeathLoc() != null)
-			deathLoc = new LocSave(tomb.getDeathLoc());
+			try {
+				deathLoc = new LocSave(tomb.getDeathLoc());
+			} catch (NullPointerException e) {
+				deathLoc = null;
+			}
+
 		else
 			deathLoc = null;
 		if (tomb.getRespawn() != null)
-			respawn = new LocSave(tomb.getRespawn());
+			try {
+				respawn = new LocSave(tomb.getRespawn());
+			} catch (NullPointerException e) {
+				respawn = null;
+			}
 		else
 			respawn = null;
 	}
@@ -67,7 +76,7 @@ public class TombSave implements Serializable {
 			tomb.setDeathLoc(deathLoc.getLoc());
 		else
 			tomb.setDeathLoc(null);
-		
+
 		if (respawn != null)
 			tomb.setRespawn(respawn.getLoc());
 		else
@@ -89,11 +98,12 @@ class LocSave implements Serializable {
 	private double z;
 	private String world;
 
-	public LocSave(Location loc) {
+	public LocSave(Location loc) throws NullPointerException {
 		x = loc.getX();
 		y = loc.getY();
 		z = loc.getZ();
 		world = loc.getWorld().getName();
+
 	}
 
 	public LocSave(Block block) {

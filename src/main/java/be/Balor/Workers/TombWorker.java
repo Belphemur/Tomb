@@ -43,6 +43,10 @@ public class TombWorker extends Worker {
 			instance = new TombWorker();
 		return instance;
 	}
+	public static void killInstance()
+	{
+		instance=null;
+	}
 
 	private TombWorker() {
 
