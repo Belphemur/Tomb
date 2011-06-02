@@ -53,7 +53,7 @@ public class SignListener extends BlockListener {
 				try {
 					deadName = p.getServer().getPlayer(e.getLine(1)).getName();
 				} catch (Exception e2) {
-					p.sendMessage(worker.graveDigger + "The player "+e.getLine(1)+"was not found.");
+					p.sendMessage(worker.graveDigger + "The player "+e.getLine(1)+ "was not found.(The player HAS to be CONNECTED)");
 					return;
 				}				
 			}
