@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>be.Balor</groupId>
   <artifactId>Tomb</artifactId>
-  <version>0.5.6</version>
+  <version>0.5.7</version>
   <name>Tomb</name>
   <scm>
   	<connection>git@github.com:Belphemur/Tomb.git</connection>
@@ -66,7 +66,7 @@
   	<dependency>
   		<groupId>com.nijikokun.bukkit</groupId>
   		<artifactId>Permissions</artifactId>
-  		<version>2.7.2</version>
+  		<version>3.1.1</version>
   	</dependency>
   	<dependency>
   		<groupId>com.nijiko.iConomy</groupId>

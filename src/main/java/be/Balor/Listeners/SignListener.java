@@ -49,7 +49,14 @@ public class SignListener extends BlockListener {
 			Tomb tomb = null;
 			String deadName;
 			if (admin)
-				deadName = e.getLine(1);
+			{
+				try {
+					deadName = p.getServer().getPlayer(e.getLine(1)).getName();
+				} catch (Exception e2) {
+					p.sendMessage(worker.graveDigger + "The player "+e.getLine(1)+"was not found.");
+					return;
+				}				
+			}
 			else
 				deadName = e.getPlayer().getName();
 			if (worker.hasTomb(deadName)) {

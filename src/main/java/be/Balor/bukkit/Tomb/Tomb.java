@@ -142,7 +142,10 @@ public class Tomb {
 
 									}
 								} else
+								{
 									signBlocks.remove(block);
+									TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") destroyed.");
+								}
 							}
 							sema.release();
 						}
@@ -172,7 +175,10 @@ public class Tomb {
 						}
 						for (Block block : signBlocks)
 							if (!(block.getState() instanceof Sign))
+							{
 								signBlocks.remove(block);
+								TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") destroyed.");
+							}
 						sema.release();
 					}
 				});
@@ -297,6 +303,7 @@ public class Tomb {
 				// e.printStackTrace();
 			}
 			this.signBlocks.add(sign);
+			TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") Added.");
 			lastBlock = sign;
 			sema.release();
 		} else
@@ -321,6 +328,7 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							signBlocks.remove(sign);
+							TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") destroyed.");
 							sema.release();
 						}
 					});

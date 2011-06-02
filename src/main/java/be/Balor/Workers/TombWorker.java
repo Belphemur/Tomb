@@ -17,7 +17,11 @@
 package be.Balor.Workers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -33,23 +37,36 @@ import be.Balor.bukkit.Tomb.TombPlugin;
 public class TombWorker extends Worker {
 	private static TombWorker instance;
 	protected HashMap<String, Tomb> tombs = new HashMap<String, Tomb>();
-	protected TombPlugin pluginInstance;
+	protected static TombPlugin pluginInstance;
 	protected SaveSystem saveSys;
 	protected Configuration config;
 	public String graveDigger = "[" + ChatColor.GOLD + "Gravedigger" + ChatColor.WHITE + "] ";
+	public static final Logger workerLog = Logger.getLogger("TombLogger");
 
 	public static TombWorker getInstance() {
 		if (instance == null)
 			instance = new TombWorker();
 		return instance;
 	}
-	public static void killInstance()
-	{
-		instance=null;
+
+	public static void killInstance() {		
+		File logger = new File(pluginInstance.getDataFolder().getPath() + File.separator
+				+ "log.txt");
+		if (logger.exists())
+			logger.delete();
+		FileHandler fh;
+		try {
+			fh = new FileHandler(logger.getPath(), true);
+			workerLog.removeHandler(fh);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		instance = null;
 	}
 
 	private TombWorker() {
-
 	}
 
 	/**
@@ -57,8 +74,30 @@ public class TombWorker extends Worker {
 	 *            the pluginInstance to set
 	 */
 	public void setPluginInstance(TombPlugin pluginInstance) {
-		this.pluginInstance = pluginInstance;
-		saveSys = new SaveSystem(pluginInstance.getDataFolder().getPath());
+		TombWorker.pluginInstance = pluginInstance;
+		String path = pluginInstance.getDataFolder().getPath();
+		saveSys = new SaveSystem(path);
+		try {
+
+			// This block configure the logger with handler and formatter
+			File logger = new File(path + File.separator + "log.txt");
+			if (logger.exists())
+				logger.delete();
+			FileHandler fh = new FileHandler(logger.getPath(), true);
+			workerLog.addHandler(fh);
+			workerLog.setUseParentHandlers(false);
+			workerLog.setLevel(Level.ALL);
+			LogFormatter formatter = new LogFormatter();
+			fh.setFormatter(formatter);
+
+			// the following statement is used to log any messages
+			workerLog.info("Logger created");
+
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		configInit();
 	}
 
@@ -79,6 +118,7 @@ public class TombWorker extends Worker {
 			config.setProperty("use-tombAsSpawnPoint", true);
 			config.setProperty("cooldownTp", 5.0D);
 			config.save();
+			workerLog.info("Config created");
 		}
 		config.load();
 	}
@@ -109,17 +149,18 @@ public class TombWorker extends Worker {
 			if (com.iConomy.iConomy.hasAccount(player.getName())) {
 				if (!com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
 						.hasEnough(this.getConfig().getDouble(action, 1.0))) {
-					player.sendMessage(graveDigger
-							+ ChatColor.RED
-							+ "You don't have "
-							+ com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0)) + " to pay me.");
+					player.sendMessage(graveDigger + ChatColor.RED + "You don't have "
+							+ com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0))
+							+ " to pay me.");
 					return false;
 				} else {
 					com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
 							.subtract(this.getConfig().getDouble(action, 1.0));
 					if (this.getConfig().getDouble(action, 1.0) != 0)
-						player.sendMessage(graveDigger + com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0))
-								+ ChatColor.DARK_GRAY + " used to paying me.");
+						player.sendMessage(graveDigger
+								+ com.iConomy.iConomy.format(this.getConfig()
+										.getDouble(action, 1.0)) + ChatColor.DARK_GRAY
+								+ " used to paying me.");
 					return true;
 				}
 
@@ -196,12 +237,12 @@ public class TombWorker extends Worker {
 
 	public synchronized void save() {
 		saveSys.save(tombs);
-		log.info("[Tomb] Tombs saved !");
+		workerLog.info("[Tomb] Tombs saved !");
 	}
 
 	public synchronized void load() {
 		tombs = saveSys.load();
-		log.info("[Tomb] Tombs loaded !");
+		workerLog.info("[Tomb] Tombs loaded !");
 	}
 
 }
