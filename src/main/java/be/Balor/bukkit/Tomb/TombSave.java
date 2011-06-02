@@ -48,6 +48,7 @@ public class TombSave implements Serializable {
 				deathLoc = new LocSave(tomb.getDeathLoc());
 			} catch (NullPointerException e) {
 				deathLoc = null;
+				TombWorker.workerLog.warning("Player :"+player+" : NPE avoided with deathLoc");
 			}
 
 		else
@@ -57,6 +58,7 @@ public class TombSave implements Serializable {
 				respawn = new LocSave(tomb.getRespawn());
 			} catch (NullPointerException e) {
 				respawn = null;
+				TombWorker.workerLog.warning("Player :"+player+" : NPE avoided with respawn");
 			}
 		else
 			respawn = null;
@@ -64,14 +66,6 @@ public class TombSave implements Serializable {
 
 	public Tomb load() {
 		Tomb tomb = new Tomb();
-		for (LocSave loc : signBlocks) {
-			try {
-				tomb.addSignBlock(loc.getBlock());
-			} catch (IllegalArgumentException e) {
-				TombWorker.log.info("[Tomb] One of the tomb of " + player + " was destroyed. :\n"
-						+ loc);
-			}
-		}
 		if (deathLoc != null)
 			tomb.setDeathLoc(deathLoc.getLoc());
 		else
@@ -84,6 +78,14 @@ public class TombSave implements Serializable {
 		tomb.setDeaths(deaths);
 		tomb.setPlayer(player);
 		tomb.setReason(reason);
+		for (LocSave loc : signBlocks) {
+			try {
+				tomb.addSignBlock(loc.getBlock());
+			} catch (IllegalArgumentException e) {
+				TombWorker.workerLog.info("One of the tomb of " + player + " was destroyed. :\n"
+						+ loc);
+			}
+		}
 		return tomb;
 	}
 }
