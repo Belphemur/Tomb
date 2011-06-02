@@ -144,7 +144,7 @@ public class Tomb {
 								} else
 								{
 									signBlocks.remove(block);
-									TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") destroyed.");
+									TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") DESTROYED.");
 								}
 							}
 							sema.release();
@@ -177,7 +177,7 @@ public class Tomb {
 							if (!(block.getState() instanceof Sign))
 							{
 								signBlocks.remove(block);
-								TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") destroyed.");
+								TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") DESTROYED.");
 							}
 						sema.release();
 					}
@@ -328,7 +328,7 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							signBlocks.remove(sign);
-							TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") destroyed.");
+							TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") REMOVED.");
 							sema.release();
 						}
 					});

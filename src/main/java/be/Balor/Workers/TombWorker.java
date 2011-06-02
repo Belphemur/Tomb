@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,19 +52,8 @@ public class TombWorker extends Worker {
 
 	public static void killInstance() {	
 		workerLog.info("Worker Instance destroyed");
-		File logger = new File(pluginInstance.getDataFolder().getPath() + File.separator
-				+ "log.txt");
-		if (logger.exists())
-			logger.delete();
-		FileHandler fh;
-		try {
-			fh = new FileHandler(logger.getPath(), true);
-			workerLog.removeHandler(fh);
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		for(Handler h : workerLog.getHandlers())
+			workerLog.removeHandler(h);
 		instance = null;
 	}
 
