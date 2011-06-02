@@ -49,7 +49,8 @@ public class TombWorker extends Worker {
 		return instance;
 	}
 
-	public static void killInstance() {		
+	public static void killInstance() {	
+		workerLog.info("Worker Instance destroyed");
 		File logger = new File(pluginInstance.getDataFolder().getPath() + File.separator
 				+ "log.txt");
 		if (logger.exists())
