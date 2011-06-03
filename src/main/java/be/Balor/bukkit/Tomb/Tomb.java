@@ -99,7 +99,7 @@ public class Tomb {
 							}
 							Sign sign;
 							for (Block block : signBlocks) {
-								if (block.getState() instanceof Sign) {
+								if (isSign(block)) {
 									sign = (Sign) block.getState();
 									sign.setLine(line, msg);
 									sign.update();
@@ -109,7 +109,13 @@ public class Tomb {
 
 									}
 								} else
+								{
 									signBlocks.remove(block);
+									TombWorker.workerLog.info("[setLine]Tomb of " + playerName + " Block :("
+											+ block.getWorld().getName() + ", " + block.getX()
+											+ ", " + block.getY() + ", " + block.getZ()
+											+ ") DESTROYED.");
+								}
 							}
 							sema.release();
 						}
@@ -131,7 +137,7 @@ public class Tomb {
 							}
 							Sign sign;
 							for (Block block : signBlocks) {
-								if (block.getState() instanceof Sign) {
+								if (isSign(block)) {
 									sign = (Sign) block.getState();
 									sign.setLine(2, deathNb);
 									sign.setLine(3, deathReason);
@@ -141,10 +147,12 @@ public class Tomb {
 									} catch (InterruptedException e) {
 
 									}
-								} else
-								{
+								} else {
 									signBlocks.remove(block);
-									TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") DESTROYED.");
+									TombWorker.workerLog.info("[updateDeath]Tomb of " + playerName + " Block :("
+											+ block.getWorld().getName() + ", " + block.getX()
+											+ ", " + block.getY() + ", " + block.getZ()
+											+ ") DESTROYED.");
 								}
 							}
 							sema.release();
@@ -174,10 +182,11 @@ public class Tomb {
 							// e.printStackTrace();
 						}
 						for (Block block : signBlocks)
-							if (!(block.getState() instanceof Sign))
-							{
+							if (!isSign(block)) {
 								signBlocks.remove(block);
-								TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+block.getWorld().getName()+", "+block.getX()+", "+block.getY()+", "+block.getZ()+") DESTROYED.");
+								TombWorker.workerLog.info("[CheckSigns]Tomb of " + playerName + " Block :("
+										+ block.getWorld().getName() + ", " + block.getX() + ", "
+										+ block.getY() + ", " + block.getZ() + ") DESTROYED.");
 							}
 						sema.release();
 					}
@@ -273,7 +282,7 @@ public class Tomb {
 					public void run() {
 						Sign sign;
 						Block block = lastBlock;
-						if (block.getState() instanceof Sign) {
+						if (isSign(block)) {
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
@@ -291,19 +300,31 @@ public class Tomb {
 	}
 
 	/**
+	 * 
+	 * @param sign
+	 *            block to be tested
+	 * @return if the block is a sign
+	 */
+	private boolean isSign(Block sign) {
+		return (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN || sign
+				.getType() == Material.SIGN_POST);
+	}
+
+	/**
 	 * @param signBlock
 	 *            the signBlock to set
 	 */
 	public void addSignBlock(Block sign) {
-		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
-				|| sign.getType() == Material.SIGN_POST) {
+		if (isSign(sign)) {
 			try {
 				sema.acquire();
 			} catch (InterruptedException e) {
 				// e.printStackTrace();
 			}
 			this.signBlocks.add(sign);
-			TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") Added.");
+			TombWorker.workerLog.info("Tomb of " + playerName + " Block :("
+					+ sign.getWorld().getName() + ", " + sign.getX() + ", " + sign.getY() + ", "
+					+ sign.getZ() + ") Added.");
 			lastBlock = sign;
 			sema.release();
 		} else
@@ -328,7 +349,9 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							signBlocks.remove(sign);
-							TombWorker.workerLog.info("Tomb of "+playerName+" Block :("+sign.getWorld().getName()+", "+sign.getX()+", "+sign.getY()+", "+sign.getZ()+") REMOVED.");
+							TombWorker.workerLog.info("[removeSignBlock]Tomb of " + playerName + " Block :("
+									+ sign.getWorld().getName() + ", " + sign.getX() + ", "
+									+ sign.getY() + ", " + sign.getZ() + ") REMOVED.");
 							sema.release();
 						}
 					});
