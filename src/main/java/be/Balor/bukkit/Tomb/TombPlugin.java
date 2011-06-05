@@ -28,6 +28,7 @@ import be.Balor.Listeners.DeathListener;
 import be.Balor.Listeners.PlayerListenerTomb;
 import be.Balor.Listeners.PluginListener;
 import be.Balor.Listeners.SignListener;
+import be.Balor.Listeners.WorldSaveListener;
 import be.Balor.Workers.TombWorker;
 
 /**
@@ -50,6 +51,7 @@ public class TombPlugin extends JavaPlugin {
 	public void onDisable() {
 		TombWorker.getInstance().save();
 		server.getScheduler().cancelTasks(this);
+		TombWorker.setDisable(true);
 		TombWorker.killInstance();
 		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
 
@@ -71,6 +73,7 @@ public class TombPlugin extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, pLt, Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, pLt, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, pLt, Priority.Normal, this);
+		pm.registerEvent(Event.Type.WORLD_SAVE, new WorldSaveListener(), Priority.Normal, this);
 	}
 
 	/*
@@ -81,6 +84,7 @@ public class TombPlugin extends JavaPlugin {
 	public void onEnable() {
 		server = getServer();
 		setupListeners();
+		TombWorker.setDisable(false);
 		TombWorker.getInstance().setPluginInstance(this);
 		log.info("[" + this.getDescription().getName() + "]" + " (version "
 				+ this.getDescription().getVersion() + ") Enabled");

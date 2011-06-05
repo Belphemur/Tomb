@@ -26,8 +26,10 @@ import be.Balor.Workers.TombWorker;
  * 
  */
 public class WorldSaveListener extends WorldListener {
+	@Override
 	public void onWorldSave(WorldSaveEvent event) {
-		TombWorker.getInstance().save();
+		if (!TombWorker.isDisable())
+			TombWorker.getInstance().save();
 	}
 
 }

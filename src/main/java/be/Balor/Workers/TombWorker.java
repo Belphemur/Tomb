@@ -53,7 +53,10 @@ public class TombWorker extends Worker {
 	public static void killInstance() {	
 		workerLog.info("Worker Instance destroyed");
 		for(Handler h : workerLog.getHandlers())
+		{
+			h.close();
 			workerLog.removeHandler(h);
+		}
 		instance = null;
 	}
 
@@ -228,12 +231,12 @@ public class TombWorker extends Worker {
 
 	public synchronized void save() {
 		saveSys.save(tombs);
-		workerLog.info("[Tomb] Tombs saved !");
+		workerLog.info("[SAVE] Tombs saved !");
 	}
 
 	public synchronized void load() {
 		tombs = saveSys.load();
-		workerLog.info("[Tomb] Tombs loaded !");
+		workerLog.info("[LOAD] Tombs loaded !");
 	}
 
 }

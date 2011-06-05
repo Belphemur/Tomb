@@ -34,6 +34,7 @@ public abstract class Worker {
 	public static final Logger log = Logger.getLogger("Minecraft");
 	protected static iConomy iConomy = null;
 	protected HashMap<String, HashMap<String, Boolean>> permissions = new HashMap<String, HashMap<String, Boolean>>();
+	protected static boolean disable = false;
 
 	/**
 	 * Check the permissions
@@ -44,6 +45,18 @@ public abstract class Worker {
 	 */
 	public boolean hasPerm(Player player, String perm) {
 		return hasPerm(player, perm, true);
+	}
+	/**
+	 * @param disable the disable to set
+	 */
+	public static void setDisable(boolean disable) {
+		Worker.disable = disable;
+	}
+	/**
+	 * @return the disable
+	 */
+	public static boolean isDisable() {
+		return disable;
 	}
 
 	/**
