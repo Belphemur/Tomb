@@ -102,7 +102,7 @@ public class Tomb {
 								if (isSign(block)) {
 									sign = (Sign) block.getState();
 									sign.setLine(line, msg);
-									sign.update();
+									sign.update(true);
 									try {
 										Thread.sleep(101);
 									} catch (InterruptedException e) {
@@ -141,9 +141,9 @@ public class Tomb {
 									sign = (Sign) block.getState();
 									sign.setLine(2, deathNb);
 									sign.setLine(3, deathReason);
-									sign.update();
+									sign.update(true);
 									try {
-										Thread.sleep(101);
+										Thread.sleep(105);
 									} catch (InterruptedException e) {
 
 									}
@@ -292,7 +292,7 @@ public class Tomb {
 							sign.setLine(2, cutMsg(deaths + " Deaths"));
 							if (reason != null && !reason.isEmpty())
 								sign.setLine(3, cutMsg(reason));
-							sign.update();
+							sign.update(true);
 
 						}
 					}
