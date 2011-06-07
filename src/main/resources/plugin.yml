@@ -1,6 +1,6 @@
 name: Tomb
 main: be.Balor.bukkit.Tomb.TombPlugin
-version: 0.5.9
+version: 0.6
 author: Balor
 license: GPLv3
 description: >

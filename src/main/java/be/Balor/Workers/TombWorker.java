@@ -50,10 +50,9 @@ public class TombWorker extends Worker {
 		return instance;
 	}
 
-	public static void killInstance() {	
+	public static void killInstance() {
 		workerLog.info("Worker Instance destroyed");
-		for(Handler h : workerLog.getHandlers())
-		{
+		for (Handler h : workerLog.getHandlers()) {
 			h.close();
 			workerLog.removeHandler(h);
 		}
@@ -138,23 +137,23 @@ public class TombWorker extends Worker {
 	 * @return
 	 */
 	public boolean iConomyCheck(Player player, String action) {
-		if (Worker.getiConomy() != null && this.getConfig().getBoolean("use-iConomy", true)
+		if (Worker.getPayement() != null && this.getConfig().getBoolean("use-iConomy", true)
 				&& !this.hasPerm(player, "tomb.free", false)) {
-			if (com.iConomy.iConomy.hasAccount(player.getName())) {
-				if (!com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
+			if (Worker.getPayement().hasAccount(player.getName())) {
+				if (!Worker.getPayement().getAccount(player.getName())
 						.hasEnough(this.getConfig().getDouble(action, 1.0))) {
 					player.sendMessage(graveDigger + ChatColor.RED + "You don't have "
-							+ com.iConomy.iConomy.format(this.getConfig().getDouble(action, 1.0))
+							+ Worker.getPayement().format(this.getConfig().getDouble(action, 1.0))
 							+ " to pay me.");
 					return false;
 				} else {
-					com.iConomy.iConomy.getAccount(player.getName()).getHoldings()
+					Worker.getPayement().getAccount(player.getName())
 							.subtract(this.getConfig().getDouble(action, 1.0));
 					if (this.getConfig().getDouble(action, 1.0) != 0)
 						player.sendMessage(graveDigger
-								+ com.iConomy.iConomy.format(this.getConfig()
-										.getDouble(action, 1.0)) + ChatColor.DARK_GRAY
-								+ " used to paying me.");
+								+ Worker.getPayement().format(
+										this.getConfig().getDouble(action, 1.0))
+								+ ChatColor.DARK_GRAY + " used to paying me.");
 					return true;
 				}
 

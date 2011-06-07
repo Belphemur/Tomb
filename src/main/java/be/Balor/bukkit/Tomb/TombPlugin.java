@@ -16,6 +16,7 @@
  ************************************************************************/
 package be.Balor.bukkit.Tomb;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
@@ -29,6 +30,7 @@ import be.Balor.Listeners.PlayerListenerTomb;
 import be.Balor.Listeners.PluginListener;
 import be.Balor.Listeners.SignListener;
 import be.Balor.Listeners.WorldSaveListener;
+import be.Balor.Workers.Downloader;
 import be.Balor.Workers.TombWorker;
 
 /**
@@ -49,11 +51,13 @@ public class TombPlugin extends JavaPlugin {
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
-		TombWorker.getInstance().save();
-		server.getScheduler().cancelTasks(this);
-		TombWorker.setDisable(true);
-		TombWorker.killInstance();
-		log.info("[" + this.getDescription().getName() + "]" + " Disabled");
+		if (Downloader.pluginName == null) {
+			TombWorker.getInstance().save();
+			server.getScheduler().cancelTasks(this);
+			TombWorker.setDisable(true);
+			TombWorker.killInstance();
+			log.info("[" + this.getDescription().getName() + "]" + " Disabled");
+		}
 
 	}
 
@@ -82,13 +86,20 @@ public class TombPlugin extends JavaPlugin {
 	 * @see org.bukkit.plugin.Plugin#onEnable()
 	 */
 	public void onEnable() {
-		server = getServer();
-		setupListeners();
-		TombWorker.setDisable(false);
-		TombWorker.getInstance().setPluginInstance(this);
-		log.info("[" + this.getDescription().getName() + "]" + " (version "
-				+ this.getDescription().getVersion() + ") Enabled");
-		TombWorker.getInstance().load();
+		if (!new File("lib" + File.separator, "Register-1.8.jar").exists()) {
+			Downloader.pluginName = "Tomb";
+			Downloader.install("http://gestdown.info/minecraft/Register-1.8.jar",
+					"Register-1.8.jar");
+			getServer().reload();
+		} else {
+			server = getServer();
+			setupListeners();
+			TombWorker.setDisable(false);
+			TombWorker.getInstance().setPluginInstance(this);
+			log.info("[" + this.getDescription().getName() + "]" + " (version "
+					+ this.getDescription().getVersion() + ") Enabled");
+			TombWorker.getInstance().load();
+		}
 
 	}
 

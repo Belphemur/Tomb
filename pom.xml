@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>be.Balor</groupId>
   <artifactId>Tomb</artifactId>
-  <version>0.5.9</version>
+  <version>0.6</version>
   <name>Tomb</name>
   <scm>
   	<connection>git@github.com:Belphemur/Tomb.git</connection>
@@ -12,6 +12,21 @@
   <build>
   	<defaultGoal>clean install</defaultGoal>
   	<finalName>Tomb</finalName>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-jar-plugin</artifactId>
+  			<version>2.3.1</version>
+	  		<configuration>
+	          <archive>
+	            <manifest>
+	              <addClasspath>true</addClasspath>
+	              <classpathPrefix>../lib/</classpathPrefix>
+	            </manifest>
+	          </archive>
+	        </configuration>
+  		</plugin>
+  	</plugins>
   </build>
   <repositories>
   	<repository>
@@ -69,9 +84,9 @@
   		<version>3.1.1</version>
   	</dependency>
   	<dependency>
-  		<groupId>com.nijiko.iConomy</groupId>
-  		<artifactId>iConomy</artifactId>
-  		<version>5.0</version>
+  		<groupId>com.Nijikokun</groupId>
+  		<artifactId>Register</artifactId>
+  		<version>1.8</version>
   	</dependency>
   </dependencies>
   <properties>

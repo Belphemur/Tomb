@@ -23,7 +23,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.iConomy.iConomy;
+import com.nijikokun.register.payment.Method;
 
 /**
  * @author Balor (aka Antoine Aflalo)
@@ -32,7 +32,7 @@ import com.iConomy.iConomy;
 public abstract class Worker {
 	protected static PermissionHandler permission = null;
 	public static final Logger log = Logger.getLogger("Minecraft");
-	protected static iConomy iConomy = null;
+	protected static Method method = null;
 	protected HashMap<String, HashMap<String, Boolean>> permissions = new HashMap<String, HashMap<String, Boolean>>();
 	protected static boolean disable = false;
 
@@ -118,8 +118,8 @@ public abstract class Worker {
 	 * 
 	 * @return
 	 */
-	public static iConomy getiConomy() {
-		return iConomy;
+	public static Method getPayement() {
+		return method;
 	}
 
 	/**
@@ -128,9 +128,9 @@ public abstract class Worker {
 	 * @param plugin
 	 * @return
 	 */
-	public static boolean setiConomy(iConomy plugin) {
-		if (iConomy == null) {
-			iConomy = plugin;
+	public static boolean setMethod(Method plugin) {
+		if (method == null) {
+			method = plugin;
 		} else {
 			return false;
 		}

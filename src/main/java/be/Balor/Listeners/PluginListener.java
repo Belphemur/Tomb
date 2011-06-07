@@ -23,8 +23,8 @@ import org.bukkit.event.server.ServerListener;
 import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.TombPlugin;
 
-import com.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.nijikokun.register.payment.Methods;
 
 import org.bukkit.plugin.Plugin;
 
@@ -33,7 +33,13 @@ import org.bukkit.plugin.Plugin;
  *
  */
 public class PluginListener extends ServerListener {
-   
+	private Methods Methods;
+   /**
+ * 
+ */
+public PluginListener() {
+	this.Methods = new Methods();
+}
     @Override
     public void onPluginEnable(PluginEnableEvent event) {
         if(TombWorker.getPermission() == null) {
@@ -45,13 +51,14 @@ public class PluginListener extends ServerListener {
                 }
             }
         }
-        if(TombWorker.getiConomy() == null) {
-            Plugin iConomy = TombPlugin.getBukkitServer().getPluginManager().getPlugin("iConomy");
-
-            if (iConomy != null) {
-                if(iConomy.isEnabled()) {
-                	TombWorker.setiConomy((iConomy)iConomy);
-                    System.out.println("[Tomb] Successfully linked with iConomy.");
+        if(TombWorker.getPayement() == null) {           
+            // Check to see if we need a payment method
+            if (!this.Methods.hasMethod()) {
+                if(this.Methods.setMethod(event.getPlugin())) {
+                    // You might want to make this a public variable inside your MAIN class public Method Method = null;
+                    // then reference it through this.plugin.Method so that way you can use it in the rest of your plugin ;)
+                    TombWorker.setMethod(this.Methods.getMethod());
+                    System.out.println("[Tomb] Payment method found (" + TombWorker.getPayement().getName() + " version: " + TombWorker.getPayement().getVersion() + ")");
                 }
             }
         }
