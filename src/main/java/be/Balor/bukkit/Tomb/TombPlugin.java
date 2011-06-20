@@ -86,10 +86,10 @@ public class TombPlugin extends JavaPlugin {
 	 * @see org.bukkit.plugin.Plugin#onEnable()
 	 */
 	public void onEnable() {
-		if (!new File("lib" + File.separator, "Register-1.8.jar").exists()) {
+		if (!new File("lib" + File.separator, "Register-1.8.1.jar").exists()) {
 			Downloader.pluginName = "Tomb";
-			Downloader.install("http://gestdown.info/minecraft/Register-1.8.jar",
-					"Register-1.8.jar");
+			Downloader.install("http://gestdown.info/minecraft/Register-1.8.1.jar",
+					"Register-1.8.1.jar");
 			getServer().reload();
 		} else {
 			server = getServer();

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>be.Balor</groupId>
   <artifactId>Tomb</artifactId>
-  <version>0.6.1</version>
+  <version>0.6.2</version>
   <name>Tomb</name>
   <scm>
   	<connection>git@github.com:Belphemur/Tomb.git</connection>
@@ -86,7 +86,7 @@
   	<dependency>
   		<groupId>com.Nijikokun</groupId>
   		<artifactId>Register</artifactId>
-  		<version>1.8</version>
+  		<version>1.8.1</version>
   	</dependency>
   </dependencies>
   <properties>

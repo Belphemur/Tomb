@@ -24,7 +24,7 @@ import be.Balor.Workers.TombWorker;
 import be.Balor.bukkit.Tomb.TombPlugin;
 
 import com.nijikokun.bukkit.Permissions.Permissions;
-import com.nijikokun.register.payment.Methods;
+import be.Balor.register.payment.Methods;
 
 import org.bukkit.plugin.Plugin;
 

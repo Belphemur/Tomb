@@ -23,7 +23,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.register.payment.Method;
+
+import be.Balor.register.payment.Method;
 
 /**
  * @author Balor (aka Antoine Aflalo)

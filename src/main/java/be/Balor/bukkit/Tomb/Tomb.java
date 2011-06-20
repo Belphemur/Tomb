@@ -136,6 +136,7 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							Sign sign;
+							TombWorker.workerLog.info("[updateDeath] "+playerName+ " died updating tomb(s).");
 							for (Block block : signBlocks) {
 								if (isSign(block)) {
 									sign = (Sign) block.getState();
@@ -143,7 +144,7 @@ public class Tomb {
 									sign.setLine(3, deathReason);
 									sign.update(true);
 									try {
-										Thread.sleep(105);
+										Thread.sleep(110);
 									} catch (InterruptedException e) {
 
 									}
