@@ -63,7 +63,6 @@ public class DeathListener extends EntityListener {
 								+ ChatColor.DARK_RED + deathLimit + ChatColor.WHITE
 								+ ") All your tombs are now destroyed.");
 					} else {
-						tomb.addDeath();
 						tomb.setReason(signtext);
 						tomb.setDeathLoc(player.getLocation());
 						tomb.updateDeath();
