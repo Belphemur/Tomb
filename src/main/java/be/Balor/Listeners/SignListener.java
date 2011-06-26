@@ -67,9 +67,9 @@ public class SignListener extends BlockListener {
 				tomb = worker.getTomb(deadName);
 				tomb.checkSigns();
 			}
-			int nbSign=0;
-			if(tomb!=null)
-				nbSign=tomb.getNbSign();
+			int nbSign = 0;
+			if (tomb != null)
+				nbSign = tomb.getNbSign();
 			// max check
 			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
 			if (!admin && maxTombs != 0 && (nbSign + 1) > maxTombs) {
@@ -104,7 +104,7 @@ public class SignListener extends BlockListener {
 				}
 			} catch (IllegalArgumentException e2) {
 				p.sendMessage(worker.graveDigger
-						+ " It's not a good place for a Tomb. Try somewhere else.");
+						+ "It's not a good place for a Tomb. Try somewhere else.");
 			}
 
 		}
@@ -118,17 +118,32 @@ public class SignListener extends BlockListener {
 			String playerName = event.getPlayer().getName();
 			Sign sign = (Sign) block.getState();
 			if (sign.getLine(0).indexOf(worker.getConfig().getString("TombKeyword", "[Tomb]")) == 0) {
+				Tomb tomb;
 				if (worker.hasPerm(event.getPlayer(), "tomb.admin")) {
-					Tomb tomb;
-					if ((tomb = worker.getTomb(block)) != null)
+					if ((tomb = worker.getTomb(block)) != null) {
 						tomb.removeSignBlock(block);
+						if (worker.getConfig().getBoolean("reset-respawn", false)) {
+							tomb.setRespawn(null);
+							event.getPlayer().sendMessage(
+									worker.graveDigger + tomb.getPlayer()
+											+ "'s respawn point has been reset.");
+						}
+					}
 					return;
 				}
 				if (worker.hasTomb(playerName)) {
 					if (!worker.getTomb(playerName).hasSign(block))
 						event.setCancelled(true);
-					else
-						worker.getTomb(playerName).removeSignBlock(block);
+					else {
+						tomb = worker.getTomb(playerName);
+						tomb.removeSignBlock(block);
+						if (worker.getConfig().getBoolean("reset-respawn", false)) {
+							tomb.setRespawn(null);
+							event.getPlayer().sendMessage(
+									worker.graveDigger + tomb.getPlayer()
+											+ "'s respawn point has been reset.");
+						}
+					}
 				} else
 					event.setCancelled(true);
 			}

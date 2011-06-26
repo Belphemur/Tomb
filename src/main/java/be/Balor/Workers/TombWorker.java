@@ -110,6 +110,7 @@ public class TombWorker extends Worker {
 			config.setProperty("TombKeyword", "[Tomb]");
 			config.setProperty("use-tombAsSpawnPoint", true);
 			config.setProperty("cooldownTp", 5.0D);
+			config.setProperty("reset-respawn", false);
 			config.save();
 			workerLog.info("Config created");
 		}
