@@ -1,7 +1,8 @@
 name: Tomb
 main: be.Balor.bukkit.Tomb.TombPlugin
-version: 0.6.2
+version: 0.6.4
 author: Balor
 license: GPLv3
+softdepend: [MultiVerse,Permissions,iConomy]
 description: >
             Plugin to create Tomb.

@@ -17,6 +17,7 @@ package be.Balor.bukkit.Tomb;
 import java.io.Serializable;
 import java.util.ArrayList;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import be.Balor.Workers.TombWorker;
@@ -48,7 +49,7 @@ public class TombSave implements Serializable {
 				deathLoc = new LocSave(tomb.getDeathLoc());
 			} catch (NullPointerException e) {
 				deathLoc = null;
-				TombWorker.workerLog.warning("Player :"+player+" : NPE avoided with deathLoc");
+				TombWorker.workerLog.warning("Player :" + player + " : NPE avoided with deathLoc");
 			}
 
 		else
@@ -58,7 +59,7 @@ public class TombSave implements Serializable {
 				respawn = new LocSave(tomb.getRespawn());
 			} catch (NullPointerException e) {
 				respawn = null;
-				TombWorker.workerLog.warning("Player :"+player+" : NPE avoided with respawn");
+				TombWorker.workerLog.warning("Player :" + player + " : NPE avoided with respawn");
 			}
 		else
 			respawn = null;
@@ -80,7 +81,9 @@ public class TombSave implements Serializable {
 		tomb.setReason(reason);
 		for (LocSave loc : signBlocks) {
 			try {
-				tomb.addSignBlock(loc.getBlock());
+				Block b = loc.getBlock();
+				if (b != null)
+					tomb.addSignBlock(b);
 			} catch (IllegalArgumentException e) {
 				TombWorker.workerLog.info("One of the tomb of " + player + " was destroyed. :\n"
 						+ loc);
@@ -117,7 +120,12 @@ class LocSave implements Serializable {
 	}
 
 	public Block getBlock() {
-		return TombPlugin.getBukkitServer().getWorld(world).getBlockAt(getLoc());
+		World w = TombPlugin.getBukkitServer().getWorld(world);
+		if (w == null) {
+			TombWorker.workerLog.info("World is not loaded :\n" + this);
+			return null;
+		}
+		return w.getBlockAt(getLoc());
 	}
 
 	/*

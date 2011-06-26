@@ -214,9 +214,31 @@ public class TombWorker extends Worker {
 	 * @param player
 	 * @return the tombs of the player
 	 */
-	public Tomb getTomb(String player) {
+	public Tomb getTomb(final String player) {
+		Tomb t = null;
 
-		return tombs.get(player);
+		if ((t = tombs.get(player)) != null)
+			return t;
+		else {
+			String found = null;
+			String lowerName = player.toLowerCase();
+			int delta = Integer.MAX_VALUE;
+			for (String p : tombs.keySet()) {
+				if (p.toLowerCase().startsWith(lowerName)) {
+					int curDelta = p.length() - lowerName.length();
+					if (curDelta < delta) {
+						found = p;
+						delta = curDelta;
+					}
+					if (curDelta == 0)
+						break;
+				}
+			}
+			if (found != null)
+				return tombs.get(found);
+			else
+				return null;
+		}
 	}
 
 	public Tomb getTomb(Block sign) {

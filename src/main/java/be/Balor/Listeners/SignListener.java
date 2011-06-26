@@ -47,25 +47,32 @@ public class SignListener extends BlockListener {
 				admin = true;
 			// Sign check
 			Tomb tomb = null;
-			String deadName;
-			if (admin)
-			{
-				try {
-					deadName = p.getServer().getPlayer(e.getLine(1)).getName();
-				} catch (Exception e2) {
-					p.sendMessage(worker.graveDigger + "The player "+e.getLine(1)+ "was not found.(The player HAS to be CONNECTED)");
-					return;
-				}				
-			}
-			else
+			String deadName = e.getLine(1);
+			if (admin) {
+				if ((tomb = worker.getTomb(deadName)) == null)
+					try {
+						deadName = p.getServer().getPlayer(e.getLine(1)).getName();
+					} catch (Exception e2) {
+						p.sendMessage(worker.graveDigger + "The player " + e.getLine(1)
+								+ "was not found.(The player HAS to be CONNECTED)");
+						return;
+					}
+				else
+					deadName = tomb.getPlayer();
+			} else
 				deadName = e.getPlayer().getName();
-			if (worker.hasTomb(deadName)) {
+			if (tomb != null)
+				tomb.checkSigns();
+			else if (worker.hasTomb(deadName)) {
 				tomb = worker.getTomb(deadName);
 				tomb.checkSigns();
 			}
+			int nbSign=0;
+			if(tomb!=null)
+				nbSign=tomb.getNbSign();
 			// max check
 			int maxTombs = worker.getConfig().getInt("maxTombStone", 0);
-			if (!admin && maxTombs != 0 && (worker.getNbTomb(deadName) + 1) > maxTombs) {
+			if (!admin && maxTombs != 0 && (nbSign + 1) > maxTombs) {
 				p.sendMessage(worker.graveDigger + "You have reached your tomb limit.");
 				e.setCancelled(true);
 				return;

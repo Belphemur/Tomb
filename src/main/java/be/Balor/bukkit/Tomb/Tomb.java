@@ -108,13 +108,12 @@ public class Tomb {
 									} catch (InterruptedException e) {
 
 									}
-								} else
-								{
+								} else {
 									signBlocks.remove(block);
-									TombWorker.workerLog.info("[setLine]Tomb of " + playerName + " Block :("
-											+ block.getWorld().getName() + ", " + block.getX()
-											+ ", " + block.getY() + ", " + block.getZ()
-											+ ") DESTROYED.");
+									TombWorker.workerLog.info("[setLine]Tomb of " + playerName
+											+ " Block :(" + block.getWorld().getName() + ", "
+											+ block.getX() + ", " + block.getY() + ", "
+											+ block.getZ() + ") DESTROYED.");
 								}
 							}
 							sema.release();
@@ -136,7 +135,8 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							Sign sign;
-							TombWorker.workerLog.info("[updateDeath] "+playerName+ " died updating tomb(s).");
+							TombWorker.workerLog.info("[updateDeath] " + playerName
+									+ " died updating tomb(s).");
 							for (Block block : signBlocks) {
 								if (isSign(block)) {
 									sign = (Sign) block.getState();
@@ -150,10 +150,10 @@ public class Tomb {
 									}
 								} else {
 									signBlocks.remove(block);
-									TombWorker.workerLog.info("[updateDeath]Tomb of " + playerName + " Block :("
-											+ block.getWorld().getName() + ", " + block.getX()
-											+ ", " + block.getY() + ", " + block.getZ()
-											+ ") DESTROYED.");
+									TombWorker.workerLog.info("[updateDeath]Tomb of " + playerName
+											+ " Block :(" + block.getWorld().getName() + ", "
+											+ block.getX() + ", " + block.getY() + ", "
+											+ block.getZ() + ") DESTROYED.");
 								}
 							}
 							sema.release();
@@ -185,9 +185,10 @@ public class Tomb {
 						for (Block block : signBlocks)
 							if (!isSign(block)) {
 								signBlocks.remove(block);
-								TombWorker.workerLog.info("[CheckSigns]Tomb of " + playerName + " Block :("
-										+ block.getWorld().getName() + ", " + block.getX() + ", "
-										+ block.getY() + ", " + block.getZ() + ") DESTROYED.");
+								TombWorker.workerLog.info("[CheckSigns]Tomb of " + playerName
+										+ " Block :(" + block.getWorld().getName() + ", "
+										+ block.getX() + ", " + block.getY() + ", " + block.getZ()
+										+ ") DESTROYED.");
 							}
 						sema.release();
 					}
@@ -307,8 +308,16 @@ public class Tomb {
 	 * @return if the block is a sign
 	 */
 	private boolean isSign(Block sign) {
-		return (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN || sign
-				.getType() == Material.SIGN_POST);
+		if (sign.getType() == Material.WALL_SIGN || sign.getType() == Material.SIGN
+				|| sign.getType() == Material.SIGN_POST || sign.getState() instanceof Sign)
+			return true;
+		else {
+			TombWorker.log.severe("Tomb of " + playerName + " Block :(" + sign.getWorld().getName()
+					+ ", " + sign.getX() + ", " + sign.getY() + ", " + sign.getZ()
+					+ ") is not a sign it's a " + sign.getType());
+			return false;
+		}
+
 	}
 
 	/**
@@ -350,9 +359,9 @@ public class Tomb {
 								// e.printStackTrace();
 							}
 							signBlocks.remove(sign);
-							TombWorker.workerLog.info("[removeSignBlock]Tomb of " + playerName + " Block :("
-									+ sign.getWorld().getName() + ", " + sign.getX() + ", "
-									+ sign.getY() + ", " + sign.getZ() + ") REMOVED.");
+							TombWorker.workerLog.info("[removeSignBlock]Tomb of " + playerName
+									+ " Block :(" + sign.getWorld().getName() + ", " + sign.getX()
+									+ ", " + sign.getY() + ", " + sign.getZ() + ") REMOVED.");
 							sema.release();
 						}
 					});
