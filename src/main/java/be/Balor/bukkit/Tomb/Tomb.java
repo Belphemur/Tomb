@@ -23,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.inventory.ItemStack;
 
 import be.Balor.Workers.TombWorker;
 
@@ -357,7 +358,10 @@ public class Tomb {
 						}
 						for (Block block : signBlocks) {
 							if (isSign(block))
-								block.setType(Material.AIR);
+							{
+								block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.SIGN));
+								block.setType(Material.AIR);	
+							}
 							try {
 								Thread.sleep(110);
 							} catch (InterruptedException e) {
