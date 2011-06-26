@@ -59,7 +59,7 @@ public class DeathListener extends EntityListener {
 					if (deathLimit != 0 && (tomb.getDeaths() % deathLimit) == 0) {
 						tomb.resetTombBlocks();
 						player.sendMessage(worker.graveDigger
-								+ "You reached the number of deaths before tomb reset.("
+								+ "You've reached the number of deaths before tomb reset.("
 								+ ChatColor.DARK_RED + deathLimit + ChatColor.WHITE
 								+ ") All your tombs are now destroyed.");
 					} else {
