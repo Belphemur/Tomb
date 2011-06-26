@@ -151,6 +151,8 @@ public class Tomb {
 									}
 								} else {
 									signBlocks.remove(block);
+									block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.SIGN));
+									block.setType(Material.AIR);	
 									TombWorker.workerLog.info("[updateDeath]Tomb of " + playerName
 											+ " Block :(" + block.getWorld().getName() + ", "
 											+ block.getX() + ", " + block.getY() + ", "
@@ -186,6 +188,8 @@ public class Tomb {
 						for (Block block : signBlocks)
 							if (!isSign(block)) {
 								signBlocks.remove(block);
+								block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.SIGN));
+								block.setType(Material.AIR);	
 								TombWorker.workerLog.info("[CheckSigns]Tomb of " + playerName
 										+ " Block :(" + block.getWorld().getName() + ", "
 										+ block.getX() + ", " + block.getY() + ", " + block.getZ()
