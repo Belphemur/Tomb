@@ -5,6 +5,7 @@ package be.Balor.Listeners;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Ghast;
@@ -53,10 +54,20 @@ public class DeathListener extends EntityListener {
 					else
 						signtext = LocaleWorker.getInstance().getLocale(
 								howtheydied[0].toLowerCase());
+					int deathLimit = worker.getConfig().getInt("maxDeaths", 0);
 					tomb.addDeath();
-					tomb.setReason(signtext);
-					tomb.setDeathLoc(player.getLocation());
-					tomb.updateDeath();
+					if (deathLimit != 0 && (tomb.getDeaths() % deathLimit) == 0) {
+						tomb.resetTombBlocks();
+						player.sendMessage(worker.graveDigger
+								+ "You reached the number of deaths before tomb reset.("
+								+ ChatColor.DARK_RED + deathLimit + ChatColor.WHITE
+								+ ") All your tombs are now destroyed.");
+					} else {
+						tomb.addDeath();
+						tomb.setReason(signtext);
+						tomb.setDeathLoc(player.getLocation());
+						tomb.updateDeath();
+					}
 				}
 
 			}

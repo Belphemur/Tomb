@@ -111,6 +111,7 @@ public class TombWorker extends Worker {
 			config.setProperty("use-tombAsSpawnPoint", true);
 			config.setProperty("cooldownTp", 5.0D);
 			config.setProperty("reset-respawn", false);
+			config.setProperty("maxDeaths", 0);
 			config.save();
 			workerLog.info("Config created");
 		}

@@ -343,6 +343,36 @@ public class Tomb {
 	}
 
 	/**
+	 * Clear the signBlock vector
+	 */
+	public void resetTombBlocks() {
+		TombPlugin.getBukkitServer().getScheduler()
+				.scheduleAsyncDelayedTask(TombWorker.getInstance().getPlugin(), new Runnable() {
+					public void run() {
+
+						try {
+							sema.acquire();
+						} catch (InterruptedException e) {
+							// e.printStackTrace();
+						}
+						for (Block block : signBlocks) {
+							if (isSign(block))
+								block.setType(Material.AIR);
+							try {
+								Thread.sleep(110);
+							} catch (InterruptedException e) {
+
+							}
+						}
+						signBlocks.clear();
+						TombWorker.workerLog.info("[resetTombBlocks] Tomb of " + playerName
+								+ " reseted.");
+						sema.release();
+					}
+				});
+	}
+
+	/**
 	 * Remove the given sign from the list.
 	 * 
 	 * @param sign
